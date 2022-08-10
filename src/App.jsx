@@ -1,29 +1,8 @@
 import Diagram, { createSchema, useSchema } from "beautiful-react-diagrams";
 import * as React from "react";
 import "beautiful-react-diagrams/styles.css";
-
-const CustomNode = ({inputs, data}) => {
-
-  return (
-    <div className="rounded-md w-10 h-10 z-10">
-      <div className=" h-auto w-full select-none pointer-events-none -z-20">
-        <img
-          src={`${data.nodeType}.jpeg`}
-          alt={data.nodeType}
-          className="select-none pointer-events-none"
-        ></img>
-      </div>
-      <div className="mt-1">
-        {inputs.map((port) =>
-          React.cloneElement(port, {
-            style: { width: "50px", height: "25px", background: "#1B263B" },
-          })
-        )}
-      </div>
-    </div>
-  );
-};
-
+import SideBar from "./components/SideBar";
+import ServiceNode from "./components/ServiceNode";
 const initialSchema = createSchema({
   nodes: [
     {
@@ -33,13 +12,22 @@ const initialSchema = createSchema({
       outputs: [{ id: "port-1", alignment: "right" }],
     },
     {
-      id: "node-custom",
+      id: "ec2-node",
       coordinates: [250, 60],
-      render: CustomNode,
+      render: ServiceNode,
       inputs: [{ id: "custom-port-1", alignment: "left" }],
-      data : {
-        nodeType : 'ec2'
-      }
+      data: {
+        nodeType: "ec2",
+      },
+    },
+    {
+      id: "ecs-node",
+      coordinates: [300, 60],
+      render: ServiceNode,
+      inputs: [{ id: "custom-port-2", alignment: "left" }],
+      data: {
+        nodeType: "ecs",
+      },
     },
   ],
 });
@@ -49,7 +37,7 @@ const UncontrolledDiagram = () => {
   const [schema, { onChange }] = useSchema(initialSchema);
 
   return (
-    <div style={{ height: "22.5rem" }}>
+    <div className="h-full">
       <Diagram schema={schema} onChange={onChange} />
     </div>
   );
@@ -57,9 +45,14 @@ const UncontrolledDiagram = () => {
 
 const App = () => {
   return (
-    <div>
-      <UncontrolledDiagram />
-    </div>
+    <main className="flex">
+      <div id="Side Bar" className="w-[20%] h-screen overflow-y-scroll">
+        <SideBar />
+      </div>
+      <div className="w-[80%] h-screen">
+        <UncontrolledDiagram />
+      </div>
+    </main>
   );
 };
 
