@@ -38,12 +38,16 @@ const DropDown = ({ name, services }) => {
       <div
         className={
           open
-            ? "visible flex justify-start p-3 flex-wrap gap-3 duration-300 z-50"
-            : "hidden duration-300 z-50"
+            ? "visible flex justify-start p-3 flex-wrap gap-3 duration-300 z-50 select-none"
+            : "hidden duration-300 z-50 select-none"
         }
       >
         {services.map((value, index) => (
-          <div key={index} className="w-7 h-7 cursor-pointer select-none z-50">
+          <div
+            draggable={false}
+            key={index}
+            className="w-7 h-7 cursor-pointer select-none z-50"
+          >
             <img
               src={process.env.PUBLIC_URL + `aws-asset/${name}/${value}.png`}
               alt={value}

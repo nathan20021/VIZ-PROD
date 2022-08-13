@@ -1,80 +1,47 @@
-import React, { useRef, useEffect, useState } from "react";
-import { Canvas } from "reaflow";
-import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
-import { BsFullscreenExit } from "react-icons/bs";
+import { useCallback, useMemo } from "react";
+import ReactFlow, {
+  addEdge,
+  applyEdgeChanges,
+  applyNodeChanges,
+  Background,
+  Controls,
+} from "react-flow-renderer";
 
-const Editor = () => {
-  const nodes = [
-    {
-      id: "1",
-      text: "1",
-    },
-    {
-      id: "2",
-      text: "2",
-    },
-  ];
-  const edges = [
-    {
-      id: "1-2",
-      from: "1",
-      to: "2",
-    },
-  ];
-  const [zoom, setZoom] = useState(0.7);
-  const ref = useRef(null);
+import ServiceComponent from "./ServiceComponent";
+
+// we define the nodeTypes outside of the component to prevent re-renderings
+// you could also use useMemo inside the component
+
+function Flow({ nodes, edges, setEdges, setNodes }) {
+  const nodeTypes = useMemo(() => ({ serviceComponent: ServiceComponent }), []);
+
+  const onNodesChange = useCallback(
+    (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
+    [setNodes]
+  );
+  const onEdgesChange = useCallback(
+    (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
+    [setEdges]
+  );
+  const onConnect = useCallback(
+    (connection) => setEdges((eds) => addEdge(connection, eds)),
+    [setEdges]
+  );
 
   return (
-    <div
-      className="absolute top-0 left-0 right-0 bottom-0"
-      style={{
-        backgroundImage: `url("one.png")`,
-      }}
+    <ReactFlow
+      nodes={nodes}
+      edges={edges}
+      onNodesChange={onNodesChange}
+      onEdgesChange={onEdgesChange}
+      onConnect={onConnect}
+      nodeTypes={nodeTypes}
+      fitView
     >
-      <div
-        id="Canvas Controller"
-        className="flex flex-col gap-4 absolute ml-5 mt-5"
-      >
-        <button
-          className="bg-white p-3 rounded-3xl"
-          onClick={() => {
-            ref.current.zoomIn();
-          }}
-        >
-          <AiOutlinePlus />
-        </button>
-        <button
-          className="bg-white p-3 rounded-3xl"
-          onClick={() => {
-            ref.current.zoomOut();
-          }}
-        >
-          <AiOutlineMinus />
-        </button>
-        <button
-          className="bg-white p-3 rounded-3xl"
-          onClick={() => {
-            ref.current.fitCanvas();
-          }}
-        >
-          <BsFullscreenExit />
-        </button>
-      </div>
-      <Canvas
-        maxZoom={0.9}
-        minZoom={-0.4}
-        zoom={zoom}
-        ref={ref}
-        nodes={nodes}
-        edges={edges}
-        onZoomChange={(z) => {
-          setZoom(z);
-        }}
-        onLayoutChange={(layout) => {
-          console.log("Layout Changed:", layout);
-        }}
-      />
-    </div>
+      <Background color="#aaa" size={0.7} gap={16} />
+      <Controls />
+    </ReactFlow>
   );
-};
-export default Editor;
+}
+
+export default Flow;
