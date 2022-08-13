@@ -1,54 +1,79 @@
 import React, { useRef, useEffect, useState } from "react";
-import { Rnd } from "react-rnd";
-import ServiceComponent from "./ServiceComponent";
-import { motion } from "framer-motion";
-import PrismaZoom from "react-prismazoom";
+import { Canvas } from "reaflow";
+import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
+import { BsFullscreenExit } from "react-icons/bs";
 
 const Editor = () => {
-  const [quantumnSize] = useState(18);
-  const [scale, setScale] = useState(1);
-  const wrapperDiv = useRef();
+  const nodes = [
+    {
+      id: "1",
+      text: "1",
+    },
+    {
+      id: "2",
+      text: "2",
+    },
+  ];
+  const edges = [
+    {
+      id: "1-2",
+      from: "1",
+      to: "2",
+    },
+  ];
+  const [zoom, setZoom] = useState(0.7);
+  const ref = useRef(null);
 
   return (
     <div
-      className="w-full h-full bg-red-500 overflow-hidden z-0 relative"
-      onWheel={(e) => {
-        console.log(scale);
-        if (e.deltaY < 0) {
-          if (scale <= 1.7) {
-            setScale(scale + 0.1);
-          }
-        } else if (e.deltaY > 0) {
-          if (scale >= 0.6) {
-            setScale(scale - 0.1);
-          }
-        }
+      className="absolute top-0 left-0 right-0 bottom-0"
+      style={{
+        backgroundImage: `url("one.png")`,
       }}
     >
-      <PrismaZoom className="w-full h-full z-50">
-        {/* <img src="three-grid.png" alt="asdfdsf" /> */}
-        <motion.div
-          ref={wrapperDiv}
-          className="absolute w-[4000px] h-[3000px] overflow-hidden bg-black translate-y-[-2000px] translate-x-[-1500px]"
-          style={{
-            backgroundImage: `url(${
-              process.env.PUBLIC_URL + "/three-grid.png"
-            })`,
-            scale: scale,
+      <div
+        id="Canvas Controller"
+        className="flex flex-col gap-4 absolute ml-5 mt-5"
+      >
+        <button
+          className="bg-white p-3 rounded-3xl"
+          onClick={() => {
+            ref.current.zoomIn();
           }}
         >
-          <div className="w-full h-full bg-repeat overflow-hidden z-30">
-            <Rnd
-              default={{ x: 35 * quantumnSize, y: 35 * quantumnSize }}
-              dragGrid={[quantumnSize, quantumnSize]}
-              bounds="parent"
-              scale={scale}
-            >
-              <ServiceComponent quantumnSize={quantumnSize} />
-            </Rnd>
-          </div>
-        </motion.div>
-      </PrismaZoom>
+          <AiOutlinePlus />
+        </button>
+        <button
+          className="bg-white p-3 rounded-3xl"
+          onClick={() => {
+            ref.current.zoomOut();
+          }}
+        >
+          <AiOutlineMinus />
+        </button>
+        <button
+          className="bg-white p-3 rounded-3xl"
+          onClick={() => {
+            ref.current.fitCanvas();
+          }}
+        >
+          <BsFullscreenExit />
+        </button>
+      </div>
+      <Canvas
+        maxZoom={0.9}
+        minZoom={-0.4}
+        zoom={zoom}
+        ref={ref}
+        nodes={nodes}
+        edges={edges}
+        onZoomChange={(z) => {
+          setZoom(z);
+        }}
+        onLayoutChange={(layout) => {
+          console.log("Layout Changed:", layout);
+        }}
+      />
     </div>
   );
 };

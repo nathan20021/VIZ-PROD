@@ -7,9 +7,9 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.4.0",
-    "react-rnd": "^10.3.7",
     "react-scripts": "5.0.1",
-    "react-use": "^17.4.0"
+    "react-use": "^17.4.0",
+    "reaflow": "^5.0.6"
   },
   "scripts": {
     "start": "react-scripts start",
