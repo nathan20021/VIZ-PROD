@@ -1,31 +1,53 @@
 import React, { useState } from "react";
-import {IoIosArrowForward} from 'react-icons/io'
+import { IoIosArrowForward } from "react-icons/io";
+
+const removeDashes = (str) => {
+  const replaceAt = function (index, replacement, string) {
+    return (
+      string.substring(0, index) +
+      replacement +
+      string.substring(index + replacement.length)
+    );
+  };
+  let result = str;
+  for (var i = 0; i < result.length; i++) {
+    result.charAt(i) === "-" ? (result = replaceAt(i, " ", result)) : void 0;
+    result.charAt(i) === "_" ? (result = replaceAt(i, " ", result)) : void 0;
+  }
+  return result;
+};
 
 const DropDown = ({ name, services }) => {
   const [open, setOpen] = useState(true);
   return (
     <div className="w-full">
       <div
-        className="w-full h-8 bg-[#323232bd] cursor-pointer max-h-max text-sm text-white flex items-center gap-1 select-none"
-        onClick={() => { 
+        className="w-full h-8 bg-[#333333] cursor-pointer max-h-max text-sm text-white flex 
+                  items-center gap-1 select-none border-b-white border-b-[1px] hover:bg-[#3f3f3f] font-bold"
+        onClick={() => {
           setOpen(!open);
         }}
       >
-        <div className={
-          open ? "duration-300 rotate-90" : "duration-300"
-        }>
-        <IoIosArrowForward/>
+        <div
+          className={open ? "ml-3 duration-300 rotate-90" : "ml-3 duration-300"}
+        >
+          <IoIosArrowForward />
         </div>
-        {name}
+        {removeDashes(name)}
       </div>
       <div
         className={
-          open ? "visible flex justify-start flex-wrap gap-3 m-3 duration-300" : "hidden duration-300"
+          open
+            ? "visible flex justify-start p-3 flex-wrap gap-3 duration-300"
+            : "hidden duration-300"
         }
       >
         {services.map((value, index) => (
-          <div key={index} className="w-8 h-8">
-            <img src={process.env.PUBLIC_URL + `aws-asset/${name}/${value}.png`} alt={value} />
+          <div key={index} className="w-7 h-7 cursor-pointer select-none">
+            <img
+              src={process.env.PUBLIC_URL + `aws-asset/${name}/${value}.png`}
+              alt={value}
+            />
           </div>
         ))}
       </div>
