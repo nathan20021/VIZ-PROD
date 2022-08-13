@@ -4,16 +4,16 @@ import DropDown from "./Dropdown";
 import { useMeasure } from "react-use";
 
 const SideBar = () => {
-    const sideBarHeight = useRef(0);
-    const [ref, { height }] = useMeasure();
+  const sideBarHeight = useRef(0);
+  const [ref, { height }] = useMeasure();
 
   useEffect(() => {
     sideBarHeight.current = Math.max(sideBarHeight.current, height);
-  }, [height]);
+  });
 
   return (
-    <div className="relative w-full">
-      <div ref={ref} className="absolute w-full">
+    <div className="relative w-full z-50 min-h-screen">
+      <div ref={ref} className="absolute w-full z-50">
         {Object.keys(mapping).map((key, index) => {
           return (
             <div key={index}>
@@ -23,8 +23,13 @@ const SideBar = () => {
         })}
       </div>
       <div
-        className={`w-full -z-10 bg-white`}
-        style={{ height: sideBarHeight.current }}
+        style={{
+          height: sideBarHeight.current,
+          minHeight: "100vh",
+          width: "100%",
+          zIndex: 50,
+          backgroundColor: "rgb(252 254 255)",
+        }}
       ></div>
     </div>
   );
