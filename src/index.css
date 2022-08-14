@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-html{
-    overflow : hidden;
+html {
+  overflow: hidden;
+}
+
+.react-flow__attribution {
+  display: none;
 }

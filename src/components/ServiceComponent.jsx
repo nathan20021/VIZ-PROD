@@ -1,13 +1,6 @@
-import { useCallback } from "react";
 import { Handle, Position } from "react-flow-renderer";
 
-const handleStyle = { left: 10 };
-
 function ServiceComponent({ data }) {
-  const onChange = useCallback((evt) => {
-    console.log(evt.target.value);
-  }, []);
-
   return (
     <div className="w-[32px] h-[32px]">
       <div>

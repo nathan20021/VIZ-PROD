@@ -17,7 +17,7 @@ const removeDashes = (str) => {
   return result;
 };
 
-const DropDown = ({ name, services }) => {
+const DropDown = ({ name, services, isArch }) => {
   const [open, setOpen] = useState(true);
   return (
     <div className="w-full z-50">
@@ -48,10 +48,19 @@ const DropDown = ({ name, services }) => {
             key={index}
             className="w-7 h-7 cursor-pointer select-none z-50"
           >
-            <img
-              src={process.env.PUBLIC_URL + `aws-asset/${name}/${value}.png`}
-              alt={value}
-            />
+            {isArch ? (
+              <img
+                src={process.env.PUBLIC_URL + `aws-asset/${name}/${value}.png`}
+                alt={value}
+              />
+            ) : (
+              <img
+                src={
+                  process.env.PUBLIC_URL + `aws-asset-res/${name}/${value}.png`
+                }
+                alt={value}
+              />
+            )}
           </div>
         ))}
       </div>
