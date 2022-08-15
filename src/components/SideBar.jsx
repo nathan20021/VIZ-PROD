@@ -14,7 +14,7 @@ const SideBar = () => {
 
   return (
     <div className="relative w-full z-40 min-h-screen">
-      <div className="res-arch-switch flex text-base justify-around">
+      <div className="res-arch-switch flex text-base justify-around ">
         <div
           className={
             isArch

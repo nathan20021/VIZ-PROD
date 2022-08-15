@@ -33,7 +33,7 @@ const DropDown = ({ name, services, isArch }) => {
         >
           <IoIosArrowForward />
         </div>
-        {removeDashes(name)}
+        {isArch ? removeDashes(name) : removeDashes(name).split("] ")[1]}
       </div>
       <div
         className={

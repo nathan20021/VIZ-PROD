@@ -54,15 +54,22 @@ const initialNodes = [
 
     data: { url: "aws-asset/VR-AR/Amazon-Sumerian.png" },
   },
+  {
+    id: "node-2",
+    type: "serviceComponent",
+    position: { x: 100, y: 100 },
+
+    data: { url: "aws-asset/Compute/Amazon-EC2.png" },
+  },
 ];
 const initialEdges = [
-  // {
-  //   id: "e1-2",
-  //   source: "node-1",
-  //   target: "node-2",
-  //   type: "smoothstep",
-  //   label: "haha",
-  // },
+  {
+    id: "e1-2",
+    source: "node-1",
+    target: "node-2",
+    type: "smoothstep",
+    markerEnd: { type: "arrowclosed", width: 2 },
+  },
 ];
 
 const App = () => {
@@ -88,7 +95,18 @@ const App = () => {
     [setEdges]
   );
   const onConnect = useCallback(
-    (connection) => setEdges((eds) => addEdge(connection, eds)),
+    (connection) => {
+      setEdges((eds) =>
+        addEdge(
+          {
+            ...connection,
+            type: "smoothstep",
+            markerEnd: { type: "arrowclosed", width: 2 },
+          },
+          eds
+        )
+      );
+    },
     [setEdges]
   );
 
@@ -117,28 +135,34 @@ const App = () => {
     }
   });
 
+  const onDragStart = useCallback((e) => {
+    setDragging(true);
+    if (e.target.src !== undefined) {
+      let data = e.target.src.toString().split("aws-asset");
+      setCurrentURL(`aws-asset${data[data.length - 1]}`);
+    }
+  });
+
+  const onDropMain = useCallback((e) => {
+    setDragging(false);
+    setHoverAreaActivate(false);
+  });
+
+  const onDragOverMain = useCallback((e) => {
+    e.preventDefault();
+    setDragging(true);
+  });
+
   return (
     <main
       className="flex overflow-hidden"
-      onDragStart={(e) => {
-        setDragging(true);
-        if (e.target.src !== undefined) {
-          let data = e.target.src.toString().split("aws-asset");
-          setCurrentURL(`aws-asset${data[data.length - 1]}`);
-        }
-      }}
-      onDrop={() => {
-        setDragging(false);
-        setHoverAreaActivate(false);
-      }}
-      onDragOver={(e) => {
-        e.preventDefault();
-        setDragging(true);
-      }}
+      onDragStart={onDragStart}
+      onDrop={onDropMain}
+      onDragOver={onDragOverMain}
     >
       <div
         id="Side Bar"
-        className="w-[25%] h-screen overflow-y-scroll z-40 shadow-2xl"
+        className="w-[25%] h-screen overflow-y-scroll z-50 shadow-2xl shadow-black"
         onMouseOver={(e) => {
           if (e.target.src !== undefined) {
             let url = e.target.src.toString();
@@ -162,26 +186,26 @@ const App = () => {
             !(!hoverAreaActivate || dragging)
               ? `
               absolute bg-white w-[8rem] 
-              h-[11rem] z-40 border-[#333333] border-2 
+              h-[9rem] z-40 border-[#333333] border-2 
               flex flex-col justify-center items-center
               ml-4 mt-4 gap-3 px-1 shadow-lg duration-200 ease-in
               `
               : `
                 opacity-0 absolute bg-white w-[8rem] 
-                h-[11rem] border-[#333333] border-2 
+                h-[9rem] border-[#333333] border-2 
                 flex flex-col justify-center items-center
                 ml-4 mt-4 gap-3 px-1 shadow-lg -z-50 duration-200 ease-in
                 `
           }
         >
-          <div className="w-full h-[40%] flex flex-col justify-end items-center">
+          <div className="w-full h-[50%] flex flex-col justify-end items-center">
             <img
               src={hoverImageURL}
               alt={toImageNameFromURL(hoverImageURL)}
               className="w-[3rem] h-[3rem] duration-200 ease-in "
             />
           </div>
-          <div className="w-[90%] h-[60%] text-center flex flex-col justify-start items-center">
+          <div className="w-[90%] h-[50%] text-center flex flex-col justify-start items-center">
             <p className="w-full text-center text-xs font-bold text-[#333232]">
               {toImageNameFromURL(hoverImageURL)}
             </p>
