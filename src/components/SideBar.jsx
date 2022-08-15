@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import mapping from "../utils/aws-icon.json";
-import awsRes from "../utils/aws-icon-res.json";
-import DropDown from "./Dropdown";
+import AwsResources from "./AwsResources";
+import AwsServices from "./AwsServices";
 import { useMeasure } from "react-use";
 
 const SideBar = () => {
@@ -14,25 +13,25 @@ const SideBar = () => {
   });
 
   return (
-    <div className="relative w-full z-50 min-h-screen ">
+    <div className="relative w-full z-40 min-h-screen">
       <div className="res-arch-switch flex text-base justify-around">
         <div
           className={
             isArch
               ? `py-1 w-1/2 flex justify-center items-center bg-[#333333] select-none text-white font-bold `
-              : `py-1 w-1/2 flex justify-center items-center hover:cursor-pointer `
+              : `py-1 w-1/2 flex justify-center items-center hover:cursor-pointer hover:bg-[#dcdcdc] duration-300 `
           }
           onClick={() => {
             !isArch ? setIsArch(true) : void 0;
           }}
         >
-          AWS Services
+          Services
         </div>
         <div
           className={
             !isArch
               ? `py-1 w-1/2 flex justify-center items-center bg-[#333333] select-none text-white font-bold `
-              : `py-1 w-1/2 flex justify-center items-center hover:cursor-pointer `
+              : `py-1 w-1/2 flex justify-center items-center hover:cursor-pointer hover:bg-[#dcdcdc] duration-300 `
           }
           onClick={() => {
             isArch ? setIsArch(false) : void 0;
@@ -41,33 +40,7 @@ const SideBar = () => {
           Resources
         </div>
       </div>
-      <div ref={ref}>
-        {isArch ? (
-          <div className="absolute w-full z-50">
-            {Object.keys(mapping).map((key, index) => {
-              return (
-                <div key={index}>
-                  <DropDown
-                    name={key}
-                    services={mapping[key]}
-                    isArch={isArch}
-                  />
-                </div>
-              );
-            })}
-          </div>
-        ) : (
-          <div className="absolute w-full z-50">
-            {Object.keys(awsRes).map((key, index) => {
-              return (
-                <div key={index}>
-                  <DropDown name={key} services={awsRes[key]} isArch={isArch} />
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </div>
+      <div ref={ref}>{isArch ? <AwsServices /> : <AwsResources />}</div>
       <div
         style={{
           height: sideBarHeight.current,
