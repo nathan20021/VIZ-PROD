@@ -72,8 +72,10 @@ const App = () => {
   const [currentURL, setCurrentURL] = useState("None");
   const [nodes, setNodes] = useState(initialNodes);
   const [edges, setEdges] = useState(initialEdges);
-  const [hoverImageURL, setHoverImageURL] = useState("None");
-  const [hoverAreaActivate, setHoverAreaActivate] = useState(true);
+  const [hoverImageURL, setHoverImageURL] = useState(
+    "aws-asset/Compute/Amazon-EC2.png"
+  );
+  const [hoverAreaActivate, setHoverAreaActivate] = useState(false);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
   const nodeTypes = useMemo(() => ({ serviceComponent: ServiceComponent }), []);
 
@@ -127,6 +129,7 @@ const App = () => {
       }}
       onDrop={() => {
         setDragging(false);
+        setHoverAreaActivate(false);
       }}
       onDragOver={(e) => {
         e.preventDefault();
@@ -140,10 +143,11 @@ const App = () => {
           if (e.target.src !== undefined) {
             let url = e.target.src.toString();
             setHoverImageURL(url);
+            setHoverAreaActivate(true);
           }
         }}
-        onMouseLeave={(e) => {
-          setHoverImageURL("None");
+        onMouseLeave={() => {
+          setHoverAreaActivate(false);
         }}
       >
         <SideBar />
@@ -155,7 +159,7 @@ const App = () => {
         <div
           ref={sideBox}
           className={
-            !(hoverImageURL === "None" || dragging)
+            !(!hoverAreaActivate || dragging)
               ? `
               absolute bg-white w-[8rem] 
               h-[11rem] z-40 border-[#333333] border-2 
@@ -166,7 +170,7 @@ const App = () => {
                 opacity-0 absolute bg-white w-[8rem] 
                 h-[11rem] border-[#333333] border-2 
                 flex flex-col justify-center items-center
-                ml-4 mt-4 gap-3 px-1 shadow-lg -z-50
+                ml-4 mt-4 gap-3 px-1 shadow-lg -z-50 duration-200 ease-in
                 `
           }
         >
