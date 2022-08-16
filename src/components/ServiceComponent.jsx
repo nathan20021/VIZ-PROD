@@ -1,13 +1,12 @@
 import { Handle, Position } from "react-flow-renderer";
-
 function ServiceComponent({ data }) {
   return (
-    <div className="w-[30px] h-[30px]">
-      <div>
+    <div>
+      <div className="w-[30px] h-[30px]">
         <img src={data.url} alt={data.url} />
+        <Handle type="target" position={Position.Left} />
+        <Handle type="source" position={Position.Right} />
       </div>
-      <Handle type="source" position={Position.Left} />
-      <Handle type="target" position={Position.Right} />
     </div>
   );
 }

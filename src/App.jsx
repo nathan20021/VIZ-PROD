@@ -13,9 +13,11 @@ import ReactFlow, {
   applyNodeChanges,
   Background,
   Controls,
+  MarkerType,
 } from "react-flow-renderer";
 
 import ServiceComponent from "./components/ServiceComponent";
+import BoundaryComponent from "./components/AwsBoundaryComponent";
 
 const removeDashes = (str) => {
   const replaceAt = function (index, replacement, string) {
@@ -55,10 +57,36 @@ const initialNodes = [
     data: { url: "aws-asset/VR-AR/Amazon-Sumerian.png" },
   },
   {
+    id: "node-3",
+    type: "boundaryNode",
+    draggable: false,
+    selectable: false,
+    position: { x: 200, y: 200 },
+    zIndex: -1,
+    data: {
+      nodeId: "node-3",
+      color: "#333333",
+      url: "aws-logo.jpeg",
+    },
+  },
+  {
+    id: "node-4",
+    type: "boundaryNode",
+    draggable: false,
+    selectable: true,
+    zIndex: -1,
+
+    position: { x: 400, y: 200 },
+    data: {
+      nodeId: "node-4",
+      color: "#001797",
+      url: "aws-asset/Networking-Content-Delivery/Amazon-Virtual-Private-Cloud.png",
+    },
+  },
+  {
     id: "node-2",
     type: "serviceComponent",
     position: { x: 100, y: 100 },
-
     data: { url: "aws-asset/Compute/Amazon-EC2.png" },
   },
 ];
@@ -68,7 +96,9 @@ const initialEdges = [
     source: "node-1",
     target: "node-2",
     type: "smoothstep",
-    markerEnd: { type: "arrowclosed", width: 2 },
+    markerEnd: {
+      type: MarkerType.ArrowClosed,
+    },
   },
 ];
 
@@ -84,7 +114,13 @@ const App = () => {
   );
   const [hoverAreaActivate, setHoverAreaActivate] = useState(false);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
-  const nodeTypes = useMemo(() => ({ serviceComponent: ServiceComponent }), []);
+  const nodeTypes = useMemo(
+    () => ({
+      serviceComponent: ServiceComponent,
+      boundaryNode: BoundaryComponent,
+    }),
+    []
+  );
 
   const onNodesChange = useCallback(
     (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
@@ -101,7 +137,9 @@ const App = () => {
           {
             ...connection,
             type: "smoothstep",
-            markerEnd: { type: "arrowclosed", width: 2 },
+            markerEnd: {
+              type: MarkerType.ArrowClosed,
+            },
           },
           eds
         )
@@ -215,6 +253,30 @@ const App = () => {
           <div
             className="reactflow-wrapper w-full h-full"
             ref={reactFlowWrapper}
+            onMouseOver={(e) => {
+              if (e.target.id.split("|").length === 2) {
+                const [type, nodeID] = e.target.id.split("|");
+                if (type === "BoundaryEleBody") {
+                  setNodes(() =>
+                    nodes.map((obj) => {
+                      if (obj.id === nodeID) {
+                        return { ...obj, draggable: true };
+                      }
+                      return obj;
+                    })
+                  );
+                }
+              } else {
+                setNodes(() =>
+                  nodes.map((obj) => {
+                    if (obj.type === "boundaryNode") {
+                      return { ...obj, draggable: false };
+                    }
+                    return obj;
+                  })
+                );
+              }
+            }}
           >
             <ReactFlow
               nodes={nodes}
