@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import AwsResources from "./AwsResources";
 import AwsServices from "./AwsServices";
 import { useMeasure } from "react-use";
+import BoundaryDropdown from "./BoundaryDropdown";
 
 const SideBar = () => {
   const sideBarHeight = useRef(0);
@@ -39,6 +40,10 @@ const SideBar = () => {
         >
           Resources
         </div>
+      </div>
+      <div></div>
+      <div>
+        <BoundaryDropdown />
       </div>
       <div ref={ref}>{isArch ? <AwsServices /> : <AwsResources />}</div>
       <div

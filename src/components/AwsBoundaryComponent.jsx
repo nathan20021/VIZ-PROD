@@ -64,15 +64,23 @@ function BoundaryComponent({ data }) {
   return (
     <div>
       <div
+        id={data.bodySelectable ? `BoundaryEleBody|${data.nodeId}` : ``}
         ref={ref}
-        style={{ borderColor: data.color }}
-        className={`w-[50px] h-[50px] relative border-[1px] border-dashed box-content cursor-default`}
+        style={{
+          borderColor: data.color,
+          background: data.bgColor === "none" ? `` : `${data.bgColor}`,
+          borderStyle: data.dashed ? `dashed` : `solid`,
+          width: data.width,
+          height: data.height,
+          cursor: data.bodySelectable ? `grab` : `default`,
+        }}
+        className={`min-w-[50px] min-h-[50px] relative border-[1px] box-content`}
       >
         <div
           id={`BoundaryEleBody|${data.nodeId}`}
           style={{
             borderColor: data.color,
-            backgroundImage: `url(${data.url})`,
+            backgroundImage: data.url !== "none" ? `url(${data.url})` : ``,
             backgroundSize: "contain",
           }}
           className="absolute w-5 h-5 border-[1px] -left-[1px] -top-[1px] box-border cursor-grab"

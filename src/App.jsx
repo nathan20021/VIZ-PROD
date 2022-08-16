@@ -18,6 +18,7 @@ import ReactFlow, {
 
 import ServiceComponent from "./components/ServiceComponent";
 import BoundaryComponent from "./components/AwsBoundaryComponent";
+import boundaryJson from "./utils/boundary-icon.json";
 
 const removeDashes = (str) => {
   const replaceAt = function (index, replacement, string) {
@@ -47,6 +48,7 @@ const toImageNameFromURL = (url) => {
   }
   return data;
 };
+const listOfBoundaries = Object.keys(boundaryJson);
 
 const initialNodes = [
   {
@@ -60,27 +62,36 @@ const initialNodes = [
     id: "node-3",
     type: "boundaryNode",
     draggable: false,
-    selectable: false,
     position: { x: 200, y: 200 },
-    zIndex: -1,
+    zIndex: 0,
     data: {
       nodeId: "node-3",
       color: "#333333",
+      bgColor: "#eeeeee38",
       url: "aws-logo.jpeg",
+      dashed: false,
+      width: "200px",
+      height: "200px",
+      cornerIcon: true,
+      bodySelectable: false,
     },
   },
   {
     id: "node-4",
     type: "boundaryNode",
     draggable: false,
-    selectable: true,
     zIndex: -1,
-
     position: { x: 400, y: 200 },
     data: {
       nodeId: "node-4",
       color: "#001797",
+      bgColor: "none",
       url: "aws-asset/Networking-Content-Delivery/Amazon-Virtual-Private-Cloud.png",
+      dashed: true,
+      width: "200px",
+      height: "200px",
+      cornerIcon: false,
+      bodySelectable: true,
     },
   },
   {
@@ -114,6 +125,7 @@ const App = () => {
   );
   const [hoverAreaActivate, setHoverAreaActivate] = useState(false);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
+  const [currentBoundaryData, setCurrentBoundaryData] = useState({});
   const nodeTypes = useMemo(
     () => ({
       serviceComponent: ServiceComponent,
@@ -159,7 +171,6 @@ const App = () => {
         x: e.clientX - reactFlowBounds.left,
         y: e.clientY - reactFlowBounds.top,
       });
-      console.log(position);
       setNodes(
         nodes.concat([
           {
@@ -201,10 +212,19 @@ const App = () => {
       <div
         id="Side Bar"
         className="w-[25%] h-screen overflow-y-scroll z-50 shadow-2xl shadow-black"
+        onMouseDown={(e) => {
+          if (e.target.id.split("|").length === 2) {
+            const key = e.target.id.split("|")[0];
+            setCurrentBoundaryData(boundaryJson[key]);
+          }
+        }}
         onMouseOver={(e) => {
           if (e.target.src !== undefined) {
             let url = e.target.src.toString();
             setHoverImageURL(url);
+            setHoverAreaActivate(true);
+          } else if (e.target.id.split("|")[1] == "boundaryGrab") {
+            setHoverImageURL(e.target.id.split("|")[0]);
             setHoverAreaActivate(true);
           }
         }}
@@ -217,7 +237,32 @@ const App = () => {
       <div
         id="EditorContainer"
         className="w-[75%] h-screen relative bg-white z-50"
+        onMouseUp={(e) => {
+          const reactFlowBounds =
+            reactFlowWrapper.current.getBoundingClientRect();
+
+          const position = reactFlowInstance.project({
+            x: e.clientX - reactFlowBounds.left - 20,
+            y: e.clientY - reactFlowBounds.top - 20,
+          });
+          setNodes(
+            nodes.concat([
+              {
+                id: `node-${nodes.length + 1}`,
+                type: "boundaryNode",
+                position: position,
+                data: {
+                  ...currentBoundaryData,
+                  nodeId: `node-${nodes.length + 1}`,
+                },
+              },
+            ])
+          );
+          console.log(currentBoundaryData);
+          setCurrentBoundaryData({});
+        }}
       >
+        {/* Hovering Box */}
         <div
           ref={sideBox}
           className={
@@ -237,15 +282,48 @@ const App = () => {
           }
         >
           <div className="w-full h-[50%] flex flex-col justify-end items-center">
-            <img
-              src={hoverImageURL}
-              alt={toImageNameFromURL(hoverImageURL)}
-              className="w-[3rem] h-[3rem] duration-200 ease-in "
-            />
+            {listOfBoundaries.includes(hoverImageURL) ? (
+              <div key={hoverImageURL}>
+                <div
+                  style={{
+                    borderColor: boundaryJson[hoverImageURL].color,
+                    background:
+                      boundaryJson[hoverImageURL].bgColor === "none"
+                        ? ``
+                        : `${boundaryJson[hoverImageURL].bgColor}`,
+                    borderStyle: boundaryJson[hoverImageURL].dashed
+                      ? `dashed`
+                      : `solid`,
+                  }}
+                  className={`w-12 h-12 relative border-[1px] box-content cursor-pointer`}
+                >
+                  <div
+                    style={{
+                      borderColor: boundaryJson[hoverImageURL].color,
+                      backgroundImage:
+                        boundaryJson[hoverImageURL].url !== "none"
+                          ? `url(${boundaryJson[hoverImageURL].url})`
+                          : ``,
+                      backgroundSize: "contain",
+                    }}
+                    className="absolute w-5 h-5 border-[1px] -left-[1px] -top-[1px] box-borders"
+                  ></div>
+                </div>
+              </div>
+            ) : (
+              <img
+                src={hoverImageURL}
+                alt={toImageNameFromURL(hoverImageURL)}
+                className="w-[3rem] h-[3rem] duration-200 ease-in "
+              />
+            )}
           </div>
           <div className="w-[90%] h-[50%] text-center flex flex-col justify-start items-center">
             <p className="w-full text-center text-xs font-bold text-[#333232]">
-              {toImageNameFromURL(hoverImageURL)}
+              {/* {toImageNameFromURL(hoverImageURL)} */}
+              {listOfBoundaries.includes(hoverImageURL)
+                ? removeDashes(hoverImageURL)
+                : toImageNameFromURL(hoverImageURL)}
             </p>
           </div>
         </div>
