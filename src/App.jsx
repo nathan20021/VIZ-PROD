@@ -1,9 +1,9 @@
 import React, {
   useState,
-  useEffect,
   useRef,
   useMemo,
   useCallback,
+  useEffect,
 } from "react";
 import SideBar from "./components/SideBar";
 import ReactFlow, {
@@ -15,10 +15,15 @@ import ReactFlow, {
   Controls,
   MarkerType,
 } from "react-flow-renderer";
+import { useSelector, useDispatch } from "react-redux";
 
 import ServiceComponent from "./components/ServiceComponent";
 import BoundaryComponent from "./components/AwsBoundaryComponent";
+import TextUpdaterNode from "./components/TextUpdaterNode";
+import ButtonEdge from "./components/ButtonEdge";
+import HeaderNode from "./components/HeaderNode";
 import boundaryJson from "./utils/boundary-icon.json";
+import SideControlPanel from "./components/SideControlPanel";
 
 const removeDashes = (str) => {
   const replaceAt = function (index, replacement, string) {
@@ -49,69 +54,27 @@ const toImageNameFromURL = (url) => {
   return data;
 };
 const listOfBoundaries = Object.keys(boundaryJson);
-
 const initialNodes = [
   {
-    id: "node-1",
-    type: "serviceComponent",
-    position: { x: 0, y: 0 },
-
-    data: { url: "aws-asset/VR-AR/Amazon-Sumerian.png" },
-  },
-  {
-    id: "node-3",
+    id: "node-0",
     type: "boundaryNode",
     draggable: false,
     position: { x: 200, y: 200 },
-    zIndex: 0,
+    zIndex: -1,
     data: {
-      nodeId: "node-3",
+      nodeId: "node-0",
       color: "#333333",
       bgColor: "#eeeeee38",
       url: "aws-logo.jpeg",
       dashed: false,
-      width: "200px",
-      height: "200px",
+      width: "400px",
+      height: "300px",
       cornerIcon: true,
       bodySelectable: false,
     },
   },
-  {
-    id: "node-4",
-    type: "boundaryNode",
-    draggable: false,
-    zIndex: -1,
-    position: { x: 400, y: 200 },
-    data: {
-      nodeId: "node-4",
-      color: "#001797",
-      bgColor: "none",
-      url: "aws-asset/Networking-Content-Delivery/Amazon-Virtual-Private-Cloud.png",
-      dashed: true,
-      width: "200px",
-      height: "200px",
-      cornerIcon: false,
-      bodySelectable: true,
-    },
-  },
-  {
-    id: "node-2",
-    type: "serviceComponent",
-    position: { x: 100, y: 100 },
-    data: { url: "aws-asset/Compute/Amazon-EC2.png" },
-  },
 ];
-const initialEdges = [
-  {
-    id: "e1-2",
-    source: "node-1",
-    target: "node-2",
-    type: "smoothstep",
-    markerEnd: {
-      type: MarkerType.ArrowClosed,
-    },
-  },
-];
+const initialEdges = [];
 
 const App = () => {
   const reactFlowWrapper = useRef(null);
@@ -123,13 +86,25 @@ const App = () => {
   const [hoverImageURL, setHoverImageURL] = useState(
     "aws-asset/Compute/Amazon-EC2.png"
   );
+  const dispatch = useDispatch();
+  const textTool = useSelector((state) => state.toolBarState.textTool);
+  const [headerTool, setHeaderTool] = useState(false);
   const [hoverAreaActivate, setHoverAreaActivate] = useState(false);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
   const [currentBoundaryData, setCurrentBoundaryData] = useState({});
+
   const nodeTypes = useMemo(
     () => ({
       serviceComponent: ServiceComponent,
       boundaryNode: BoundaryComponent,
+      textUpdater: TextUpdaterNode,
+      headerNode: HeaderNode,
+    }),
+    []
+  );
+  const edgeTypes = useMemo(
+    () => ({
+      buttonedge: ButtonEdge,
     }),
     []
   );
@@ -148,9 +123,12 @@ const App = () => {
         addEdge(
           {
             ...connection,
-            type: "smoothstep",
+            style: { stroke: "#000000" },
+            // type: "buttonedge",
             markerEnd: {
               type: MarkerType.ArrowClosed,
+              color: "#000000",
+              strokeWidth: "2px",
             },
           },
           eds
@@ -159,7 +137,6 @@ const App = () => {
     },
     [setEdges]
   );
-
   const onDrop = useCallback((e) => {
     e.preventDefault();
     if (currentURL !== "None") {
@@ -183,7 +160,6 @@ const App = () => {
       );
     }
   });
-
   const onDragStart = useCallback((e) => {
     setDragging(true);
     if (e.target.src !== undefined) {
@@ -191,17 +167,20 @@ const App = () => {
       setCurrentURL(`aws-asset${data[data.length - 1]}`);
     }
   });
-
   const onDropMain = useCallback((e) => {
     setDragging(false);
     setHoverAreaActivate(false);
   });
-
   const onDragOverMain = useCallback((e) => {
     e.preventDefault();
     setDragging(true);
   });
 
+  useEffect(() => {
+    window.onbeforeunload = function (e) {
+      return "Do you want to exit this page?";
+    };
+  }, []);
   return (
     <main
       className="flex overflow-hidden"
@@ -211,7 +190,7 @@ const App = () => {
     >
       <div
         id="Side Bar"
-        className="w-[25%] h-screen overflow-y-scroll z-50 shadow-2xl shadow-black"
+        className="w-[24%] h-screen overflow-y-scroll z-50 shadow-2xl shadow-black"
         onMouseDown={(e) => {
           if (e.target.id.split("|").length === 2) {
             const key = e.target.id.split("|")[0];
@@ -236,30 +215,76 @@ const App = () => {
       </div>
       <div
         id="EditorContainer"
-        className="w-[75%] h-screen relative bg-white z-50"
+        style={{
+          cursor: textTool ? `text` : `default`,
+        }}
+        className="w-[85%] h-screen relative bg-white z-50"
         onMouseUp={(e) => {
-          const reactFlowBounds =
-            reactFlowWrapper.current.getBoundingClientRect();
+          if (Object.keys(currentBoundaryData).length !== 0) {
+            const reactFlowBounds =
+              reactFlowWrapper.current.getBoundingClientRect();
 
-          const position = reactFlowInstance.project({
-            x: e.clientX - reactFlowBounds.left - 20,
-            y: e.clientY - reactFlowBounds.top - 20,
-          });
-          setNodes(
-            nodes.concat([
-              {
-                id: `node-${nodes.length + 1}`,
-                type: "boundaryNode",
-                position: position,
-                data: {
-                  ...currentBoundaryData,
-                  nodeId: `node-${nodes.length + 1}`,
+            const position = reactFlowInstance.project({
+              x: e.clientX - reactFlowBounds.left - 20,
+              y: e.clientY - reactFlowBounds.top - 20,
+            });
+            setNodes(
+              nodes.concat([
+                {
+                  id: `node-${nodes.length + 1}`,
+                  type: "boundaryNode",
+                  position: position,
+                  zIndex: -1,
+                  data: {
+                    ...currentBoundaryData,
+                    nodeId: `node-${nodes.length + 1}`,
+                  },
                 },
-              },
-            ])
-          );
-          console.log(currentBoundaryData);
-          setCurrentBoundaryData({});
+              ])
+            );
+            setCurrentBoundaryData({});
+          }
+        }}
+        onClick={(e) => {
+          if (textTool) {
+            console.log("adslkfjdkljfkdjf");
+            const reactFlowBounds =
+              reactFlowWrapper.current.getBoundingClientRect();
+
+            const position = reactFlowInstance.project({
+              x: e.clientX - reactFlowBounds.left - 20,
+              y: e.clientY - reactFlowBounds.top - 20,
+            });
+            setNodes(
+              nodes.concat([
+                {
+                  id: `node-${nodes.length + 1}`,
+                  type: "textUpdater",
+                  position: position,
+                },
+              ])
+            );
+            dispatch({ type: "SWITCH_TEXT_TOOL" });
+          }
+          if (headerTool) {
+            const reactFlowBounds =
+              reactFlowWrapper.current.getBoundingClientRect();
+
+            const position = reactFlowInstance.project({
+              x: e.clientX - reactFlowBounds.left - 20,
+              y: e.clientY - reactFlowBounds.top - 20,
+            });
+            setNodes(
+              nodes.concat([
+                {
+                  id: `node-${nodes.length + 1}`,
+                  type: "headerNode",
+                  position: position,
+                },
+              ])
+            );
+            setHeaderTool(false);
+          }
         }}
       >
         {/* Hovering Box */}
@@ -327,9 +352,16 @@ const App = () => {
             </p>
           </div>
         </div>
+        <div
+          id="SideControlPanel"
+          className="absolute right-0 z-20 flex flex-col justify-center items-center px-3 gap-5 mt-6"
+        >
+          <SideControlPanel />
+        </div>
         <ReactFlowProvider>
           <div
-            className="reactflow-wrapper w-full h-full"
+            id="hahaha"
+            className="reactflow-wrapper w-full h-full bg-white"
             ref={reactFlowWrapper}
             onMouseOver={(e) => {
               if (e.target.id.split("|").length === 2) {
@@ -363,6 +395,7 @@ const App = () => {
               onEdgesChange={onEdgesChange}
               onConnect={onConnect}
               nodeTypes={nodeTypes}
+              edgeTypes={edgeTypes}
               onInit={setReactFlowInstance}
               onDrop={onDrop}
               fitView
