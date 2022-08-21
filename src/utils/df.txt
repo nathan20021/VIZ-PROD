@@ -1,16 +1,3 @@
-import React, { useState } from "react";
-import { IoText, IoSave } from "react-icons/io5";
-import domtoimage from "dom-to-image";
-import { saveAs } from "file-saver";
-import { useSelector, useDispatch } from "react-redux";
-import switchTextTool from "../actions/switchTextTool";
-
-const SideControlPanel = () => {
-  const dispatch = useDispatch();
-  const textTool = useSelector((state) => state.toolBarState.textTool);
-  const [headerTool, setHeaderTool] = useState(false);
-  return (
-    <div>
       <button
         className={
           headerTool
@@ -31,7 +18,7 @@ const SideControlPanel = () => {
             : `text-sm p-2 bg-white rounded-full shadow-xl border-[#aaaaaa] border-2`
         }
         onClick={() => {
-          dispatch(switchTextTool());
+          dispatch({ type: "SWITCH_TEXT_TOOL" });
         }}
       >
         <p></p>
@@ -70,8 +57,3 @@ const SideControlPanel = () => {
       >
         <IoSave />
       </button>
-    </div>
-  );
-};
-
-export default SideControlPanel;

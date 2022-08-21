@@ -1,10 +1,14 @@
 import { Handle, Position } from "react-flow-renderer";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+
 function ServiceComponent({ data }) {
   const [hover, setHover] = useState(false);
+  const dispatch = useDispatch();
+
   return (
     <div
-      onMouseOver={() => {
+      onMouseEnter={() => {
         setHover(true);
       }}
       onMouseLeave={() => {
@@ -14,51 +18,82 @@ function ServiceComponent({ data }) {
       <div className="w-[30px] h-[30px]">
         <img src={data.url} alt={data.url} />
         <Handle
-          type="source"
           id="sr"
-          position={Position.Right}
-          onConnect={(params) => console.log("handle onConnect", params)}
-          style={{
-            background: "#333333",
-            width: "0.2rem",
-            height: "0.2rem",
-            visibility: hover ? "" : "hidden",
-          }}
-        />
-        <Handle
           type="source"
+          position={Position.Right}
+          style={{
+            background: "#333333",
+            visibility: hover ? "" : "hidden",
+          }}
+        />
+        <Handle
           id="sb"
+          type="source"
           position={Position.Bottom}
-          onConnect={(params) => console.log("handle onConnect", params)}
           style={{
             background: "#333333",
-            width: "0.2rem",
-            height: "0.2rem",
             visibility: hover ? "" : "hidden",
           }}
         />
         <Handle
+          id="tr"
           type="target"
+          position={Position.Right}
+          style={{
+            background: "#ff000",
+            visibility: "hidden",
+          }}
+        />
+        <Handle
+          id="tb"
+          type="target"
+          position={Position.Bottom}
+          style={{
+            background: "#ff000",
+            visibility: "hidden",
+          }}
+        />
+
+        <Handle
           id="tt"
+          type="target"
+          onMouseDown={() => {
+            dispatch({ type: "SET_DRAG_HANDLE", payload: "tt" });
+          }}
           position={Position.Top}
-          onConnect={(params) => console.log("handle onConnect", params)}
           style={{
-            background: "#333333",
-            width: "0.2rem",
-            height: "0.2rem",
+            background: "#ff0000",
             visibility: hover ? "" : "hidden",
           }}
         />
         <Handle
-          type="target"
           id="tl"
+          type="target"
+          onMouseDown={() => {
+            dispatch({ type: "SET_DRAG_HANDLE", payload: "tl" });
+          }}
           position={Position.Left}
-          onConnect={(params) => console.log("handle onConnect", params)}
           style={{
-            background: "#333333",
-            width: "0.2rem",
-            height: "0.2rem",
+            background: "#ff0000",
             visibility: hover ? "" : "hidden",
+          }}
+        />
+        <Handle
+          id="st"
+          type="source"
+          position={Position.Top}
+          style={{
+            background: "#ff0000",
+            visibility: "hidden",
+          }}
+        />
+        <Handle
+          id="sl"
+          type="source"
+          position={Position.Left}
+          style={{
+            background: "#ff0000",
+            visibility: "hidden",
           }}
         />
       </div>
