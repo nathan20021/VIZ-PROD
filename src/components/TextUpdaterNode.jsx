@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 function TextUpdaterNode({ data }) {
@@ -6,6 +6,7 @@ function TextUpdaterNode({ data }) {
   const [fontSize, setFontSize] = useState(11);
   const [isBold, setBold] = useState(false);
   const [isItalic, setItalic] = useState(false);
+  const [readOnly, setReadOnly] = useState(true);
   const [isUnderline, setUnderline] = useState(false);
   const toolBarState = useSelector((state) => state.toolBarState);
   const CurrentTextNodeID = useSelector((state) => state.currentTextNodeId);
@@ -31,10 +32,17 @@ function TextUpdaterNode({ data }) {
       ? setUnderline(toolBarState.underline)
       : void 0;
   }, [toolBarState.underline]);
+  useEffect(() => {
+    if (CurrentTextNodeID == null) {
+      setReadOnly(true);
+    }
+  }, [CurrentTextNodeID]);
   return (
     <div
       style={{
-        width: inputString.length * (fontSize / 2) + 15,
+        width: isBold
+          ? inputString.length * (fontSize / 2) + 20
+          : inputString.length * (fontSize / 2) + 15,
       }}
       className="text-updater-node"
       onClick={() => {
@@ -42,7 +50,6 @@ function TextUpdaterNode({ data }) {
         dispatch({ type: "SET_BOLD", payload: isBold });
         dispatch({ type: "SET_ITALIC", payload: isItalic });
         dispatch({ type: "SET_UNDERLINE", payload: isUnderline });
-        dispatch({ type: "SET_CURRENT_NODE_ID", payload: data.nodeId });
       }}
     >
       <div
@@ -53,13 +60,21 @@ function TextUpdaterNode({ data }) {
         }}
       >
         <input
+          onDoubleClick={() => {
+            setReadOnly(false);
+          }}
+          onKeyDown={(e) => {
+            !readOnly && e.code == "Enter" ? setReadOnly(true) : void 0;
+          }}
           style={{
             fontStyle: isItalic ? "oblique" : "normal",
             textDecoration: isUnderline ? "underline" : "none",
+            userSelect: "none",
           }}
           className="text-center bg-transparent"
-          id="text"
+          id={`textUpdater|${data.nodeId}`}
           name="text"
+          readOnly={readOnly}
           onChange={onChange}
           value={inputString}
           autoComplete="off"

@@ -92,6 +92,7 @@ const App = () => {
   const textTool = useSelector((state) => state.toolBarState.textTool);
   const headerTitle = useSelector((state) => state.headerTitle);
   const currentTextNodeId = useSelector((state) => state.currentTextNodeId);
+  const deleteRequest = useSelector((state) => state.deleteNodeRequest);
   const [dragging, setDragging] = useState(false);
   const [currentURL, setCurrentURL] = useState("None");
   const [nodes, setNodes] = useState(initialNodes);
@@ -103,7 +104,9 @@ const App = () => {
   const [hoverAreaActivate, setHoverAreaActivate] = useState(false);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
   const [currentBoundaryData, setCurrentBoundaryData] = useState({});
-
+  const deleteNodeById = (id) => {
+    setNodes((nodes) => nodes.filter((node) => node.id !== id));
+  };
   const nodeTypes = useMemo(
     () => ({
       serviceComponent: ServiceComponent,
@@ -199,9 +202,15 @@ const App = () => {
   });
 
   const onClickMain = useCallback((e) => {
-    // if (currentTextNodeId !== null) {
-    //   dispatch({ type: "SET_CURRENT_NODE_ID", payload: null });
-    // }
+    e.target.id.split("|")[0] === "textUpdater"
+      ? dispatch({
+          type: "SET_CURRENT_NODE_ID",
+          payload: e.target.id.split("|")[1],
+        })
+      : dispatch({
+          type: "SET_CURRENT_NODE_ID",
+          payload: null,
+        });
   });
 
   useEffect(() => {
@@ -216,6 +225,17 @@ const App = () => {
     }
   }, [currentTextNodeId]);
 
+  useEffect(() => {
+    deleteRequest && currentTextNodeId !== null
+      ? deleteNodeById(currentTextNodeId)
+      : void 0;
+    dispatch({ type: "SET_DELETE_REQUEST", payload: false });
+    dispatch({ type: "SET_CURRENT_NODE_ID", payload: null });
+  }, [deleteRequest]);
+
+  useEffect(() => {
+    document.title = `Viz - ${headerTitle}`;
+  }, [headerTitle]);
   return (
     <main className="overflow-hidden h-screen">
       <div className="h-[10%] w-full">

@@ -26,9 +26,9 @@ const toolBarReducer = (
     case "SET_BOLD":
       return { ...state, bold: action.payload };
     case "SET_ITALIC":
-      return { ...state, bold: action.payload };
+      return { ...state, italic: action.payload };
     case "SET_UNDERLINE":
-      return { ...state, bold: action.payload };
+      return { ...state, underline: action.payload };
     default:
       return state;
   }

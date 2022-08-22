@@ -30,7 +30,3 @@
   align-items: center;
   font-size: 20px;
 }
-
-.button-container button:hover {
-  background: #dddddd;
-}
