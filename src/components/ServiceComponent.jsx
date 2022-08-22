@@ -62,7 +62,7 @@ function ServiceComponent({ data }) {
           }}
           position={Position.Top}
           style={{
-            background: "#ff0000",
+            background: "#333333",
             visibility: hover ? "" : "hidden",
           }}
         />
@@ -74,7 +74,7 @@ function ServiceComponent({ data }) {
           }}
           position={Position.Left}
           style={{
-            background: "#ff0000",
+            background: "#333333",
             visibility: hover ? "" : "hidden",
           }}
         />
@@ -83,7 +83,7 @@ function ServiceComponent({ data }) {
           type="source"
           position={Position.Top}
           style={{
-            background: "#ff0000",
+            background: "#333333",
             visibility: "hidden",
           }}
         />
@@ -92,7 +92,7 @@ function ServiceComponent({ data }) {
           type="source"
           position={Position.Left}
           style={{
-            background: "#ff0000",
+            background: "#333333",
             visibility: "hidden",
           }}
         />

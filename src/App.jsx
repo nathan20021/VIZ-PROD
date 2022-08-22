@@ -55,6 +55,8 @@ const toImageNameFromURL = (url) => {
   return data;
 };
 const listOfBoundaries = Object.keys(boundaryJson);
+
+const initialEdges = [];
 const initialNodes = [
   {
     id: "node-0",
@@ -74,12 +76,22 @@ const initialNodes = [
       bodySelectable: false,
     },
   },
+  {
+    id: "node-1",
+    type: "headerNode",
+    draggable: true,
+    position: { x: 200, y: 150 },
+    zIndex: -1,
+    data: {},
+  },
 ];
-const initialEdges = [];
-
 const App = () => {
+  const dispatch = useDispatch();
   const reactFlowWrapper = useRef(null);
   const sideBox = useRef(null);
+  const textTool = useSelector((state) => state.toolBarState.textTool);
+  const headerTitle = useSelector((state) => state.headerTitle);
+  const draggingHandleId = useSelector((state) => state.draggingHandleId);
   const [dragging, setDragging] = useState(false);
   const [currentURL, setCurrentURL] = useState("None");
   const [nodes, setNodes] = useState(initialNodes);
@@ -87,13 +99,10 @@ const App = () => {
   const [hoverImageURL, setHoverImageURL] = useState(
     "aws-asset/Compute/Amazon-EC2.png"
   );
-  const dispatch = useDispatch();
-  const textTool = useSelector((state) => state.toolBarState.textTool);
   const [headerTool, setHeaderTool] = useState(false);
   const [hoverAreaActivate, setHoverAreaActivate] = useState(false);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
   const [currentBoundaryData, setCurrentBoundaryData] = useState({});
-  const draggingHandleId = useSelector((state) => state.draggingHandleId);
 
   const nodeTypes = useMemo(
     () => ({
@@ -110,7 +119,6 @@ const App = () => {
     }),
     []
   );
-
   const onNodesChange = useCallback(
     (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
     [setNodes]
@@ -128,7 +136,6 @@ const App = () => {
           target: connection.source,
           targetHandle: `t${connection.sourceHandle.charAt(1)}`,
         };
-        console.log(newConnection);
         setEdges((eds) =>
           addEdge(
             {
@@ -207,6 +214,7 @@ const App = () => {
       return "Do you want to exit this page?";
     };
   }, []);
+
   return (
     <main className="overflow-hidden h-screen">
       <div className="h-[10%] w-full">

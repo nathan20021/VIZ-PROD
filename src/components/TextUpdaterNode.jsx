@@ -1,7 +1,7 @@
 import React, { useRef, useState, useCallback, useEffect } from "react";
 
 function TextUpdaterNode({ data }) {
-  const [inputString, setInputString] = useState("TEXT");
+  const [inputString, setInputString] = useState(data.value);
   const onChange = useCallback((e) => {
     setInputString(e.target.value);
   });

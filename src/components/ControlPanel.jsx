@@ -23,7 +23,7 @@ const ControlPanel = () => {
   const [headerTool, setHeaderTool] = useState(false);
   const commonStyle = "flex justify-center items-center gap-3 text-xs";
   return (
-    <div className="bg-[#eeeeee] w-full h-full flex flex-start gap-3">
+    <div className="bg-[#eeeeee] w-full h-full flex justify-start gap-3">
       <div id="undo-redo-section" className={`${commonStyle} text-base`}>
         <BiUndo />
         <BiRedo />
