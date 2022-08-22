@@ -19,86 +19,90 @@ const TopBar = () => {
         id="left-side"
         className="flex justify-around items-center h-full w-[50%] z-[1000]"
       >
-        <div id="logo-container" className="h-10 w-10">
+        <div id="logo-container" className="h-9 w-9">
           <img
-            className="rounded-lg"
+            className="rounded-lg shadow-md"
             src="viz-logo.png"
             alt="Viz Logo"
             draggable={false}
           />
         </div>
-        <div id="header-option-bar-container " className="h-full w-[90%]">
-          <div id="header-container" className="text-lg">
-            <p>
-              <span
-                className="absolute opacity-0 z-[-100] whitespace-pre"
-                ref={span}
-              >
-                {headerTitle}
-              </span>
-              <input
-                type="text"
-                className="box-border min-w-[50px] p-0 font-bold"
-                style={{ width }}
-                value={headerTitle}
-                autoFocus
-                onChange={(e) => {
-                  dispatch({ type: "SET_Header", payload: e.target.value });
-                }}
-              />
-            </p>
-          </div>
-          <div id="menu" className="flex items-center gap-3">
-            <Menu className="text-sm">
-              <MenuButton className="text-sm">File</MenuButton>
-              <MenuList className="flex flex-col text-xs">
-                <MenuItem command="⌘N">New File</MenuItem>
-                <MenuItem command="⌘O">Open</MenuItem>
-                <MenuItem command="⌘S">Save</MenuItem>
-                <MenuItem command="⌘⇧E">Export</MenuItem>
-              </MenuList>
-            </Menu>
-            <Menu className="text-sm">
-              <MenuButton className="text-sm">Edit</MenuButton>
-              <MenuList className="flex flex-col text-xs">
-                <MenuItem command="⌘A">Select All</MenuItem>
-                <MenuItem command="⌘X">Cut</MenuItem>
-                <MenuItem command="⌘C">Copy</MenuItem>
-                <MenuItem command="⌘P">Paste</MenuItem>
-                <MenuItem command="⌘U">Undo</MenuItem>
-                <MenuItem command="⌘Y">Redo</MenuItem>
-                <MenuItem>Background Color</MenuItem>
-              </MenuList>
-            </Menu>
-            <Menu className="text-sm">
-              <MenuButton className="text-sm">Insert</MenuButton>
-              <MenuList className="flex flex-col text-xs">
-                <MenuItem>Viz diagram</MenuItem>
-                <MenuItem>Image</MenuItem>
-                <MenuItem>Video</MenuItem>
-                <MenuItem>Youtube</MenuItem>
-              </MenuList>
-            </Menu>
-            <Menu className="text-sm">
-              <MenuButton className="text-sm">Tool</MenuButton>
-              <MenuList className="flex flex-col text-xs">
-                <MenuItem>Align Left</MenuItem>
-                <MenuItem>Alight Right</MenuItem>
-                <MenuItem>Alight Top</MenuItem>
-                <MenuItem>Alight Bottom</MenuItem>
-                <MenuItem command="⌘L">Lock</MenuItem>
-                <MenuItem command="⌘B">Bold</MenuItem>
-                <MenuItem command="⌘I">Italic</MenuItem>
-                <MenuItem command="⌘U">Underline</MenuItem>
-              </MenuList>
-            </Menu>
-            <Menu className="text-sm">
-              <MenuButton className="text-sm">Help</MenuButton>
-              <MenuList className="flex flex-col text-xs">
-                <MenuItem>Usage</MenuItem>
-                <MenuItem>Key Binding</MenuItem>
-              </MenuList>
-            </Menu>
+        <div
+          id="header-option-bar-container "
+          className="h-full w-[90%] flex flex-col justify-center"
+        >
+          <div>
+            <div id="header-container" className="text-base">
+              <p>
+                <span
+                  className="absolute opacity-0 z-[-100] whitespace-pre"
+                  ref={span}
+                >
+                  {headerTitle}
+                </span>
+                <input
+                  type="text"
+                  className="box-border min-w-[50px] p-0 font-bold"
+                  style={{ width }}
+                  value={headerTitle}
+                  onChange={(e) => {
+                    dispatch({ type: "SET_Header", payload: e.target.value });
+                  }}
+                />
+              </p>
+            </div>
+            <div id="menu" className="flex items-center gap-3">
+              <Menu className="text-sm">
+                <MenuButton className="text-sm">File</MenuButton>
+                <MenuList className="flex flex-col text-xs">
+                  <MenuItem command="⌘N">New File</MenuItem>
+                  <MenuItem command="⌘O">Open</MenuItem>
+                  <MenuItem command="⌘S">Save</MenuItem>
+                  <MenuItem command="⌘⇧E">Export</MenuItem>
+                </MenuList>
+              </Menu>
+              <Menu className="text-sm">
+                <MenuButton className="text-sm">Edit</MenuButton>
+                <MenuList className="flex flex-col text-xs">
+                  <MenuItem command="⌘A">Select All</MenuItem>
+                  <MenuItem command="⌘X">Cut</MenuItem>
+                  <MenuItem command="⌘C">Copy</MenuItem>
+                  <MenuItem command="⌘P">Paste</MenuItem>
+                  <MenuItem command="⌘U">Undo</MenuItem>
+                  <MenuItem command="⌘Y">Redo</MenuItem>
+                  <MenuItem>Background Color</MenuItem>
+                </MenuList>
+              </Menu>
+              <Menu className="text-sm">
+                <MenuButton className="text-sm">Insert</MenuButton>
+                <MenuList className="flex flex-col text-xs">
+                  <MenuItem>Viz diagram</MenuItem>
+                  <MenuItem>Image</MenuItem>
+                  <MenuItem>Video</MenuItem>
+                  <MenuItem>Youtube</MenuItem>
+                </MenuList>
+              </Menu>
+              <Menu className="text-sm">
+                <MenuButton className="text-sm">Tool</MenuButton>
+                <MenuList className="flex flex-col text-xs">
+                  <MenuItem>Align Left</MenuItem>
+                  <MenuItem>Alight Right</MenuItem>
+                  <MenuItem>Alight Top</MenuItem>
+                  <MenuItem>Alight Bottom</MenuItem>
+                  <MenuItem command="⌘L">Lock</MenuItem>
+                  <MenuItem command="⌘B">Bold</MenuItem>
+                  <MenuItem command="⌘I">Italic</MenuItem>
+                  <MenuItem command="⌘U">Underline</MenuItem>
+                </MenuList>
+              </Menu>
+              <Menu className="text-sm">
+                <MenuButton className="text-sm">Help</MenuButton>
+                <MenuList className="flex flex-col text-xs">
+                  <MenuItem>Usage</MenuItem>
+                  <MenuItem>Key Binding</MenuItem>
+                </MenuList>
+              </Menu>
+            </div>
           </div>
         </div>
       </div>

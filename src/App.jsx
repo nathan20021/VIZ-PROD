@@ -59,7 +59,7 @@ const listOfBoundaries = Object.keys(boundaryJson);
 const initialEdges = [];
 const initialNodes = [
   {
-    id: "node-0",
+    id: "node-1",
     type: "boundaryNode",
     draggable: false,
     position: { x: 200, y: 200 },
@@ -70,14 +70,14 @@ const initialNodes = [
       bgColor: "#eeeeee38",
       url: "aws-logo.jpeg",
       dashed: false,
-      width: "400px",
-      height: "300px",
+      width: "700px",
+      height: "500px",
       cornerIcon: true,
       bodySelectable: false,
     },
   },
   {
-    id: "node-1",
+    id: "node-2",
     type: "headerNode",
     draggable: true,
     position: { x: 200, y: 150 },
@@ -91,7 +91,7 @@ const App = () => {
   const sideBox = useRef(null);
   const textTool = useSelector((state) => state.toolBarState.textTool);
   const headerTitle = useSelector((state) => state.headerTitle);
-  const draggingHandleId = useSelector((state) => state.draggingHandleId);
+  const currentTextNodeId = useSelector((state) => state.currentTextNodeId);
   const [dragging, setDragging] = useState(false);
   const [currentURL, setCurrentURL] = useState("None");
   const [nodes, setNodes] = useState(initialNodes);
@@ -129,46 +129,22 @@ const App = () => {
   );
   const onConnect = useCallback(
     (connection) => {
-      if (draggingHandleId != null) {
-        const newConnection = {
-          source: connection.target,
-          sourceHandle: `s${draggingHandleId.charAt(1)}`,
-          target: connection.source,
-          targetHandle: `t${connection.sourceHandle.charAt(1)}`,
-        };
-        setEdges((eds) =>
-          addEdge(
-            {
-              ...newConnection,
-              style: { stroke: "#000000" },
-              markerEnd: {
-                type: MarkerType.ArrowClosed,
-                color: "#000000",
-                strokeWidth: "2px",
-              },
+      setEdges((eds) =>
+        addEdge(
+          {
+            ...connection,
+            style: { stroke: "#000000" },
+            markerEnd: {
+              type: MarkerType.ArrowClosed,
+              color: "#000000",
+              strokeWidth: "2px",
             },
-            eds
-          )
-        );
-      } else {
-        setEdges((eds) =>
-          addEdge(
-            {
-              ...connection,
-              style: { stroke: "#000000" },
-              markerEnd: {
-                type: MarkerType.ArrowClosed,
-                color: "#000000",
-                strokeWidth: "2px",
-              },
-            },
-            eds
-          )
-        );
-      }
-      dispatch({ type: "SET_DRAG_HANDLE", payload: null });
+          },
+          eds
+        )
+      );
     },
-    [setEdges, draggingHandleId]
+    [setEdges]
   );
   const onDrop = useCallback((e) => {
     e.preventDefault();
@@ -181,6 +157,10 @@ const App = () => {
         x: e.clientX - reactFlowBounds.left,
         y: e.clientY - reactFlowBounds.top,
       });
+      const textNodePosition = reactFlowInstance.project({
+        x: e.clientX - reactFlowBounds.left - 30,
+        y: e.clientY - reactFlowBounds.top + 70,
+      });
       setNodes(
         nodes.concat([
           {
@@ -188,6 +168,15 @@ const App = () => {
             type: "serviceComponent",
             position: position,
             data: { url: currentURL },
+          },
+          {
+            id: `node-${nodes.length + 2}`,
+            type: "textUpdater",
+            position: textNodePosition,
+            data: {
+              value: toImageNameFromURL(currentURL),
+              nodeId: `node-${nodes.length + 2}`,
+            },
           },
         ])
       );
@@ -209,11 +198,23 @@ const App = () => {
     setDragging(true);
   });
 
+  const onClickMain = useCallback((e) => {
+    // if (currentTextNodeId !== null) {
+    //   dispatch({ type: "SET_CURRENT_NODE_ID", payload: null });
+    // }
+  });
+
   useEffect(() => {
     window.onbeforeunload = function (e) {
       return "Do you want to exit this page?";
     };
   }, []);
+
+  useEffect(() => {
+    if (currentTextNodeId !== null) {
+      console.log(nodes[parseInt(currentTextNodeId.split("-")[1]) - 1]);
+    }
+  }, [currentTextNodeId]);
 
   return (
     <main className="overflow-hidden h-screen">
@@ -435,8 +436,10 @@ const App = () => {
                 onConnect={onConnect}
                 nodeTypes={nodeTypes}
                 edgeTypes={edgeTypes}
+                onClick={onClickMain}
                 onInit={setReactFlowInstance}
                 onDrop={onDrop}
+                connectionMode="loose"
                 fitView
               >
                 <Background color="#aaa" size={0.7} gap={15} />

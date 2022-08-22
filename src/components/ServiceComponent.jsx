@@ -1,10 +1,8 @@
 import { Handle, Position } from "react-flow-renderer";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 
 function ServiceComponent({ data }) {
   const [hover, setHover] = useState(false);
-  const dispatch = useDispatch();
 
   return (
     <div
@@ -31,32 +29,14 @@ function ServiceComponent({ data }) {
           type="source"
           position={Position.Bottom}
           style={{
-            background: "#333333",
+            background: "#ff000",
             visibility: hover ? "" : "hidden",
-          }}
-        />
-        <Handle
-          id="tr"
-          type="target"
-          position={Position.Right}
-          style={{
-            background: "#ff000",
-            visibility: "hidden",
-          }}
-        />
-        <Handle
-          id="tb"
-          type="target"
-          position={Position.Bottom}
-          style={{
-            background: "#ff000",
-            visibility: "hidden",
           }}
         />
 
         <Handle
-          id="tt"
-          type="target"
+          id="st"
+          type="source"
           onMouseDown={() => {
             dispatch({ type: "SET_DRAG_HANDLE", payload: "tt" });
           }}
@@ -67,8 +47,8 @@ function ServiceComponent({ data }) {
           }}
         />
         <Handle
-          id="tl"
-          type="target"
+          id="sl"
+          type="source"
           onMouseDown={() => {
             dispatch({ type: "SET_DRAG_HANDLE", payload: "tl" });
           }}
@@ -76,24 +56,6 @@ function ServiceComponent({ data }) {
           style={{
             background: "#333333",
             visibility: hover ? "" : "hidden",
-          }}
-        />
-        <Handle
-          id="st"
-          type="source"
-          position={Position.Top}
-          style={{
-            background: "#333333",
-            visibility: "hidden",
-          }}
-        />
-        <Handle
-          id="sl"
-          type="source"
-          position={Position.Left}
-          style={{
-            background: "#333333",
-            visibility: "hidden",
           }}
         />
       </div>

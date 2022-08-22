@@ -5,7 +5,7 @@ import HeaderReducer from "./HeaderReducer";
 
 const allReducers = combineReducers({
   toolBarState: toolBarReducer,
-  draggingHandleId: ComponentReducer,
+  currentTextNodeId: ComponentReducer,
   headerTitle: HeaderReducer,
 });
 

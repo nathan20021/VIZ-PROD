@@ -22,3 +22,15 @@
   align-items: center;
   min-height: 10px;
 }
+
+.button-container button {
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+}
+
+.button-container button:hover {
+  background: #dddddd;
+}

@@ -1,9 +1,9 @@
-const ComponentReducer = (state, action) => {
+const ComponentReducer = (state = null, action) => {
   switch (action.type) {
-    case "SET_DRAG_HANDLE":
+    case "SET_CURRENT_NODE_ID":
       return action.payload;
     default:
-      return null;
+      return state;
   }
 };
 
