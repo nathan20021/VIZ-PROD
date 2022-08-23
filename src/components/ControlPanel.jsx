@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { IoText, IoSave } from "react-icons/io5";
-import domtoimage from "dom-to-image";
-import { saveAs } from "file-saver";
+import { IoText } from "react-icons/io5";
+
 import { useSelector, useDispatch } from "react-redux";
 import { FaBold } from "react-icons/fa";
 import { FiUnderline, FiItalic } from "react-icons/fi";
@@ -115,9 +114,16 @@ const ControlPanel = () => {
           <AiFillDelete />
         </button>
       </div>
-      <div id="lock-section" className={commonStyle}>
-        <button>
-          <AiOutlineLock />
+      <div id="textTool-section" className={commonStyle}>
+        <button
+          style={{
+            backgroundColor: toolBarState.textTool ? `#aaaaaa` : ``,
+          }}
+          onClick={() => {
+            dispatch({ type: "SWITCH_TEXT_TOOL" });
+          }}
+        >
+          <IoText />
         </button>
       </div>
       <div id="alight-section" className={commonStyle}>

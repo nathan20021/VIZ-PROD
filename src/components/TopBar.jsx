@@ -2,6 +2,8 @@ import React, { useRef, useEffect, useState } from "react";
 import { Menu, MenuButton, MenuList, MenuItem, Avatar } from "@chakra-ui/react";
 import { BiCloudDownload } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
+import domtoimage from "dom-to-image";
+import { saveAs } from "file-saver";
 
 const TopBar = () => {
   const dispatch = useDispatch();
@@ -110,7 +112,24 @@ const TopBar = () => {
         id="right-side"
         className="h-full flex justify-end items-center gap-4 mr-5"
       >
-        <button className="bg-[#333333] hover:bg-[#555555] text-white font-bold text-sm px-4 py-2 flex justify-center items-center gap-2 rounded-sm shadow-md">
+        <button
+          className="bg-[#333333] hover:bg-[#555555] text-white font-bold text-sm px-4 py-2 flex justify-center items-center gap-2 rounded-sm shadow-md"
+          onClick={() => {
+            var node = document.getElementById("hahaha");
+            //   reactFlowInstance.fitView();
+            domtoimage
+              .toPng(node)
+              .then(function (dataUrl) {
+                var img = new Image();
+                img.src = dataUrl;
+                console.log(dataUrl);
+                saveAs(dataUrl, `${headerTitle}.jpeg`);
+              })
+              .catch(function (error) {
+                console.error("oops, something went wrong!", error);
+              });
+          }}
+        >
           <div className="text-xl font-extrabold">
             <BiCloudDownload />
           </div>

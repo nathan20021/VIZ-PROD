@@ -20,7 +20,7 @@ import { useSelector, useDispatch } from "react-redux";
 import ServiceComponent from "./components/ServiceComponent";
 import BoundaryComponent from "./components/AwsBoundaryComponent";
 import TextUpdaterNode from "./components/TextUpdaterNode";
-import ButtonEdge from "./components/ButtonEdge";
+
 import HeaderNode from "./components/HeaderNode";
 import boundaryJson from "./utils/boundary-icon.json";
 import ControlPanel from "./components/ControlPanel";
@@ -116,12 +116,7 @@ const App = () => {
     }),
     []
   );
-  const edgeTypes = useMemo(
-    () => ({
-      buttonedge: ButtonEdge,
-    }),
-    []
-  );
+
   const onNodesChange = useCallback(
     (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
     [setNodes]
@@ -220,12 +215,6 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    if (currentTextNodeId !== null) {
-      console.log(nodes[parseInt(currentTextNodeId.split("-")[1]) - 1]);
-    }
-  }, [currentTextNodeId]);
-
-  useEffect(() => {
     deleteRequest && currentTextNodeId !== null
       ? deleteNodeById(currentTextNodeId)
       : void 0;
@@ -312,7 +301,6 @@ const App = () => {
           }}
           onClick={(e) => {
             if (textTool) {
-              console.log("adslkfjdkljfkdjf");
               const reactFlowBounds =
                 reactFlowWrapper.current.getBoundingClientRect();
 
@@ -326,6 +314,10 @@ const App = () => {
                     id: `node-${nodes.length + 1}`,
                     type: "textUpdater",
                     position: position,
+                    data: {
+                      value: "TEXT",
+                      nodeId: `node-${nodes.length + 1}`,
+                    },
                   },
                 ])
               );
@@ -455,7 +447,6 @@ const App = () => {
                 onEdgesChange={onEdgesChange}
                 onConnect={onConnect}
                 nodeTypes={nodeTypes}
-                edgeTypes={edgeTypes}
                 onClick={onClickMain}
                 onInit={setReactFlowInstance}
                 onDrop={onDrop}

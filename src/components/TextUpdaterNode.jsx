@@ -25,7 +25,6 @@ function TextUpdaterNode({ data }) {
   }, [toolBarState.bold]);
   useEffect(() => {
     CurrentTextNodeID === data.nodeId ? setItalic(toolBarState.italic) : void 0;
-    console.log(isItalic);
   }, [toolBarState.italic]);
   useEffect(() => {
     CurrentTextNodeID === data.nodeId
