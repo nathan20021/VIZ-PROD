@@ -5,8 +5,8 @@
       "type": "boundaryNode",
       "draggable": false,
       "position": {
-        "x": 232,
-        "y": 185
+        "x": 210,
+        "y": 179.5
       },
       "zIndex": -1,
       "data": {
@@ -20,12 +20,12 @@
         "cornerIcon": true,
         "bodySelectable": false
       },
-      "width": 348,
-      "height": 243,
+      "width": 385,
+      "height": 255,
       "selected": false,
       "positionAbsolute": {
-        "x": 232,
-        "y": 185
+        "x": 210,
+        "y": 179.5
       },
       "dragging": false
     },
@@ -33,15 +33,15 @@
       "id": "node-2",
       "type": "headerNode",
       "position": {
-        "x": 106.61066942324078,
-        "y": 95.86184452423977
+        "x": 48.61066942324078,
+        "y": 104.86184452423977
       },
       "width": 275,
       "height": 35,
       "selected": false,
       "positionAbsolute": {
-        "x": 106.61066942324078,
-        "y": 95.86184452423977
+        "x": 48.61066942324078,
+        "y": 104.86184452423977
       },
       "dragging": false
     },
@@ -49,8 +49,8 @@
       "id": "node-3",
       "type": "boundaryNode",
       "position": {
-        "x": 34.009454811207775,
-        "y": 224.41724454641815
+        "x": -14.990545188792225,
+        "y": 234.41724454641815
       },
       "zIndex": -1,
       "data": {
@@ -64,29 +64,13 @@
         "bodySelectable": false,
         "nodeId": "node-3"
       },
-      "width": 179,
-      "height": 151,
+      "width": 205,
+      "height": 154,
       "draggable": false,
       "selected": false,
       "positionAbsolute": {
-        "x": 34.009454811207775,
-        "y": 224.41724454641815
-      },
-      "dragging": false
-    },
-    {
-      "id": "node-4",
-      "type": "textUpdater",
-      "position": {
-        "x": 20.531760341811605,
-        "y": 229.4060917811162
-      },
-      "width": 51,
-      "height": 15,
-      "selected": false,
-      "positionAbsolute": {
-        "x": 20.531760341811605,
-        "y": 229.4060917811162
+        "x": -14.990545188792225,
+        "y": 234.41724454641815
       },
       "dragging": false
     },
@@ -94,8 +78,8 @@
       "id": "node-6",
       "type": "serviceComponent",
       "position": {
-        "x": 73.86592722320245,
-        "y": 315.1952172620662
+        "x": 39.86592722320245,
+        "y": 318.6952172620662
       },
       "data": {
         "url": "aws-asset-res/[loT]%20AWS-IoT-Thing/Generic.png"
@@ -104,8 +88,8 @@
       "height": 30,
       "selected": false,
       "positionAbsolute": {
-        "x": 73.86592722320245,
-        "y": 315.1952172620662
+        "x": 39.86592722320245,
+        "y": 318.6952172620662
       },
       "dragging": false
     },
@@ -113,16 +97,16 @@
       "id": "node-6",
       "type": "serviceComponent",
       "position": {
-        "x": 73.86592722320245,
-        "y": 315.1952172620662
+        "x": 39.86592722320245,
+        "y": 318.6952172620662
       },
       "data": {
         "url": "aws-asset-res/[loT]%20AWS-IoT-Thing/Medical-Emergency.png"
       },
       "selected": false,
       "positionAbsolute": {
-        "x": 73.86592722320245,
-        "y": 315.1952172620662
+        "x": 39.86592722320245,
+        "y": 318.6952172620662
       },
       "dragging": false,
       "width": 30,
@@ -132,8 +116,8 @@
       "id": "node-7",
       "type": "serviceComponent",
       "position": {
-        "x": 70.85477445790053,
-        "y": 247.29371771119628
+        "x": 36.85477445790053,
+        "y": 250.79371771119628
       },
       "data": {
         "url": "aws-asset-res/[loT]%20AWS-IoT-Thing/Generic.png"
@@ -142,8 +126,8 @@
       "height": 30,
       "selected": false,
       "positionAbsolute": {
-        "x": 70.85477445790053,
-        "y": 247.29371771119628
+        "x": 36.85477445790053,
+        "y": 250.79371771119628
       },
       "dragging": false
     },
@@ -151,8 +135,8 @@
       "id": "node-8",
       "type": "serviceComponent",
       "position": {
-        "x": 150.69863574367338,
-        "y": 282.6450298182074
+        "x": 116.69863574367338,
+        "y": 286.1450298182074
       },
       "data": {
         "url": "aws-asset-res/[Migration-and-Transfer]%20AWS-Mainframe-Modernization/Developer.png"
@@ -161,8 +145,8 @@
       "height": 30,
       "selected": false,
       "positionAbsolute": {
-        "x": 150.69863574367338,
-        "y": 282.6450298182074
+        "x": 116.69863574367338,
+        "y": 286.1450298182074
       },
       "dragging": false
     },
@@ -170,8 +154,8 @@
       "id": "node-9",
       "type": "serviceComponent",
       "position": {
-        "x": 279.87150360585343,
-        "y": 204.58186210357036
+        "x": 272.87150360585343,
+        "y": 207.58186210357036
       },
       "data": {
         "url": "aws-asset/Security-Identity-Compliance/Amazon-Cognito.png"
@@ -180,8 +164,8 @@
       "height": 30,
       "selected": false,
       "positionAbsolute": {
-        "x": 279.87150360585343,
-        "y": 204.58186210357036
+        "x": 272.87150360585343,
+        "y": 207.58186210357036
       },
       "dragging": false
     },
@@ -208,8 +192,8 @@
       "id": "node-11",
       "type": "serviceComponent",
       "position": {
-        "x": 331.4842982433496,
-        "y": 363.6729586645732
+        "x": 358.9842982433496,
+        "y": 367.6729586645732
       },
       "data": {
         "url": "aws-asset/Analytics/Amazon-Kinesis-Firehose.png"
@@ -218,8 +202,8 @@
       "height": 30,
       "selected": false,
       "positionAbsolute": {
-        "x": 331.4842982433496,
-        "y": 363.6729586645732
+        "x": 358.9842982433496,
+        "y": 367.6729586645732
       },
       "dragging": false
     },
@@ -246,8 +230,8 @@
       "id": "node-13",
       "type": "serviceComponent",
       "position": {
-        "x": 378.55308927374864,
-        "y": 282.6208967821272
+        "x": 379.55308927374864,
+        "y": 283.6208967821272
       },
       "data": {
         "url": "aws-asset/Compute/AWS-Lambda.png"
@@ -256,8 +240,8 @@
       "height": 30,
       "selected": false,
       "positionAbsolute": {
-        "x": 378.55308927374864,
-        "y": 282.6208967821272
+        "x": 379.55308927374864,
+        "y": 283.6208967821272
       },
       "dragging": false
     },
@@ -265,8 +249,127 @@
       "id": "node-14",
       "type": "serviceComponent",
       "position": {
-        "x": 516.5921708854163,
-        "y": 285.63204954742906
+        "x": 264.8797274056039,
+        "y": 373.1340472621199
+      },
+      "data": {
+        "url": "aws-asset/Storage/Amazon-Simple-Storage-Service.png"
+      },
+      "width": 65,
+      "height": 17,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 264.8797274056039,
+        "y": 373.1340472621199
+      },
+      "dragging": false
+    },
+    {
+      "id": "node-14",
+      "type": "textUpdater",
+      "position": {
+        "x": 264.8797274056039,
+        "y": 373.1340472621199
+      },
+      "data": {
+        "value": "Telemetry",
+        "nodeId": "node-14"
+      },
+      "width": 65,
+      "height": 17,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 264.8797274056039,
+        "y": 373.1340472621199
+      },
+      "dragging": false
+    },
+    {
+      "id": "node-15",
+      "type": "textUpdater",
+      "position": {
+        "x": 326.3797274056039,
+        "y": 402.6340472621199
+      },
+      "data": {
+        "value": "Kinesis Firehose",
+        "nodeId": "node-15"
+      },
+      "width": 108,
+      "height": 17,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 326.3797274056039,
+        "y": 402.6340472621199
+      },
+      "dragging": false
+    },
+    {
+      "id": "node-16",
+      "type": "textUpdater",
+      "position": {
+        "x": 13.379727405603887,
+        "y": 351.6340472621199
+      },
+      "data": {
+        "value": "IOT Devices",
+        "nodeId": "node-16"
+      },
+      "width": 81,
+      "height": 17,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 13.379727405603887,
+        "y": 351.6340472621199
+      },
+      "dragging": false
+    },
+    {
+      "id": "node-17",
+      "type": "textUpdater",
+      "position": {
+        "x": 96.87972740560389,
+        "y": 322.1340472621199
+      },
+      "data": {
+        "value": "Studio Host",
+        "nodeId": "node-17"
+      },
+      "width": 81,
+      "height": 17,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 96.87972740560389,
+        "y": 322.1340472621199
+      },
+      "dragging": false
+    },
+    {
+      "id": "node-18",
+      "type": "textUpdater",
+      "position": {
+        "x": 48.87972740560389,
+        "y": 209.6340472621199
+      },
+      "data": {
+        "value": "Studio",
+        "nodeId": "node-18"
+      },
+      "width": 62,
+      "height": 21,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 48.87972740560389,
+        "y": 209.6340472621199
+      },
+      "dragging": false
+    },
+    {
+      "id": "node-19",
+      "type": "serviceComponent",
+      "position": {
+        "x": 530.879727405604,
+        "y": 284.6340472621199
       },
       "data": {
         "url": "aws-asset/Storage/Amazon-Simple-Storage-Service.png"
@@ -275,88 +378,8 @@
       "height": 30,
       "selected": false,
       "positionAbsolute": {
-        "x": 516.5921708854163,
-        "y": 285.63204954742906
-      },
-      "dragging": false
-    },
-    {
-      "id": "node-15",
-      "type": "textUpdater",
-      "position": {
-        "x": 50.43401693326899,
-        "y": 352.390437587961
-      },
-      "width": 81,
-      "height": 15,
-      "selected": false,
-      "positionAbsolute": {
-        "x": 50.43401693326899,
-        "y": 352.390437587961
-      },
-      "dragging": false
-    },
-    {
-      "id": "node-16",
-      "type": "textUpdater",
-      "position": {
-        "x": 125.27605071356547,
-        "y": 320.5502782462518
-      },
-      "width": 81,
-      "height": 15,
-      "selected": false,
-      "positionAbsolute": {
-        "x": 125.27605071356547,
-        "y": 320.5502782462518
-      },
-      "dragging": false
-    },
-    {
-      "id": "node-17",
-      "type": "textUpdater",
-      "position": {
-        "x": 266.5064324566687,
-        "y": 243.6061664569354
-      },
-      "width": 57,
-      "height": 15,
-      "selected": false,
-      "positionAbsolute": {
-        "x": 266.5064324566687,
-        "y": 243.6061664569354
-      },
-      "dragging": false
-    },
-    {
-      "id": "node-18",
-      "type": "textUpdater",
-      "position": {
-        "x": 244.50643245666868,
-        "y": 355.6061664569354
-      },
-      "width": 69,
-      "height": 15,
-      "selected": false,
-      "dragging": false,
-      "positionAbsolute": {
-        "x": 244.50643245666868,
-        "y": 355.6061664569354
-      }
-    },
-    {
-      "id": "node-19",
-      "type": "textUpdater",
-      "position": {
-        "x": 260.0064324566687,
-        "y": 322.6061664569354
-      },
-      "width": 81,
-      "height": 15,
-      "selected": false,
-      "positionAbsolute": {
-        "x": 260.0064324566687,
-        "y": 322.6061664569354
+        "x": 530.879727405604,
+        "y": 284.6340472621199
       },
       "dragging": false
     },
@@ -364,15 +387,19 @@
       "id": "node-20",
       "type": "textUpdater",
       "position": {
-        "x": 377.0064324566687,
-        "y": 195.6061664569354
+        "x": 528.879727405604,
+        "y": 319.6340472621199
       },
-      "width": 33,
-      "height": 15,
+      "data": {
+        "value": "Amazon Simple Storage Service",
+        "nodeId": "node-20"
+      },
+      "width": 31,
+      "height": 17,
       "selected": false,
       "positionAbsolute": {
-        "x": 377.0064324566687,
-        "y": 195.6061664569354
+        "x": 528.879727405604,
+        "y": 319.6340472621199
       },
       "dragging": false
     },
@@ -380,15 +407,19 @@
       "id": "node-21",
       "type": "textUpdater",
       "position": {
-        "x": 368.5064324566687,
-        "y": 318.6061664569354
+        "x": 252.87972740560383,
+        "y": 315.1340472621199
       },
-      "width": 51,
-      "height": 15,
+      "data": {
+        "value": "API Gateway",
+        "nodeId": "node-21"
+      },
+      "width": 81,
+      "height": 17,
       "selected": false,
       "positionAbsolute": {
-        "x": 368.5064324566687,
-        "y": 318.6061664569354
+        "x": 252.87972740560383,
+        "y": 315.1340472621199
       },
       "dragging": false
     },
@@ -396,15 +427,19 @@
       "id": "node-22",
       "type": "textUpdater",
       "position": {
-        "x": 497.0064324566687,
-        "y": 262.6061664569354
+        "x": 258.37972740560383,
+        "y": 241.1340472621199
       },
-      "width": 69,
-      "height": 15,
+      "data": {
+        "value": "Cognito",
+        "nodeId": "node-22"
+      },
+      "width": 59,
+      "height": 17,
       "selected": false,
       "positionAbsolute": {
-        "x": 497.0064324566687,
-        "y": 262.6061664569354
+        "x": 258.37972740560383,
+        "y": 241.1340472621199
       },
       "dragging": false
     },
@@ -412,15 +447,19 @@
       "id": "node-23",
       "type": "textUpdater",
       "position": {
-        "x": 520.5064324566687,
-        "y": 321.6061664569354
+        "x": 374.8797274056039,
+        "y": 248.1340472621199
       },
-      "width": 27,
-      "height": 15,
+      "data": {
+        "value": "EC2",
+        "nodeId": "node-23"
+      },
+      "width": 37,
+      "height": 17,
       "selected": false,
       "positionAbsolute": {
-        "x": 520.5064324566687,
-        "y": 321.6061664569354
+        "x": 374.8797274056039,
+        "y": 248.1340472621199
       },
       "dragging": false
     },
@@ -428,15 +467,39 @@
       "id": "node-24",
       "type": "textUpdater",
       "position": {
-        "x": 288.5064324566687,
-        "y": 404.1061664569354
+        "x": 369.3797274056039,
+        "y": 321.6340472621199
       },
-      "width": 111,
-      "height": 15,
+      "data": {
+        "value": "Lambda",
+        "nodeId": "node-24"
+      },
+      "width": 53,
+      "height": 17,
       "selected": false,
       "positionAbsolute": {
-        "x": 288.5064324566687,
-        "y": 404.1061664569354
+        "x": 369.3797274056039,
+        "y": 321.6340472621199
+      },
+      "dragging": false
+    },
+    {
+      "id": "node-25",
+      "type": "textUpdater",
+      "position": {
+        "x": 513.879727405604,
+        "y": 263.6340472621199
+      },
+      "data": {
+        "value": "Data Lake",
+        "nodeId": "node-25"
+      },
+      "width": 65,
+      "height": 17,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 513.879727405604,
+        "y": 263.6340472621199
       },
       "dragging": false
     }
@@ -446,7 +509,7 @@
       "source": "node-7",
       "sourceHandle": "sr",
       "target": "node-8",
-      "targetHandle": "tl",
+      "targetHandle": "sl",
       "style": {
         "stroke": "#000000"
       },
@@ -455,13 +518,14 @@
         "color": "#000000",
         "strokeWidth": "2px"
       },
-      "id": "reactflow__edge-node-7sr-node-8tl"
+      "id": "reactflow__edge-node-7sr-node-8sl",
+      "selected": false
     },
     {
       "source": "node-6",
       "sourceHandle": "sr",
       "target": "node-8",
-      "targetHandle": "tl",
+      "targetHandle": "sl",
       "style": {
         "stroke": "#000000"
       },
@@ -470,13 +534,14 @@
         "color": "#000000",
         "strokeWidth": "2px"
       },
-      "id": "reactflow__edge-node-6sr-node-8tl"
+      "id": "reactflow__edge-node-6sr-node-8sl",
+      "selected": false
     },
     {
       "source": "node-8",
       "sourceHandle": "sr",
       "target": "node-10",
-      "targetHandle": "tl",
+      "targetHandle": "sl",
       "style": {
         "stroke": "#000000"
       },
@@ -485,13 +550,29 @@
         "color": "#000000",
         "strokeWidth": "2px"
       },
-      "id": "reactflow__edge-node-8sr-node-10tl"
+      "id": "reactflow__edge-node-8sr-node-10sl",
+      "selected": false
+    },
+    {
+      "source": "node-10",
+      "sourceHandle": "sr",
+      "target": "node-13",
+      "targetHandle": "sl",
+      "style": {
+        "stroke": "#000000"
+      },
+      "markerEnd": {
+        "type": "arrowclosed",
+        "color": "#000000",
+        "strokeWidth": "2px"
+      },
+      "id": "reactflow__edge-node-10sr-node-13sl"
     },
     {
       "source": "node-8",
       "sourceHandle": "sr",
       "target": "node-9",
-      "targetHandle": "tl",
+      "targetHandle": "sl",
       "style": {
         "stroke": "#000000"
       },
@@ -500,13 +581,14 @@
         "color": "#000000",
         "strokeWidth": "2px"
       },
-      "id": "reactflow__edge-node-8sr-node-9tl"
+      "id": "reactflow__edge-node-8sr-node-9sl",
+      "selected": false
     },
     {
       "source": "node-8",
       "sourceHandle": "sr",
       "target": "node-11",
-      "targetHandle": "tl",
+      "targetHandle": "sl",
       "style": {
         "stroke": "#000000"
       },
@@ -515,58 +597,14 @@
         "color": "#000000",
         "strokeWidth": "2px"
       },
-      "id": "reactflow__edge-node-8sr-node-11tl"
-    },
-    {
-      "source": "node-12",
-      "sourceHandle": "sb",
-      "target": "node-13",
-      "targetHandle": "tt",
-      "style": {
-        "stroke": "#000000"
-      },
-      "markerEnd": {
-        "type": "arrowclosed",
-        "color": "#000000",
-        "strokeWidth": "2px"
-      },
-      "id": "reactflow__edge-node-12sb-node-13tt"
-    },
-    {
-      "source": "node-13",
-      "sourceHandle": "sr",
-      "target": "node-14",
-      "targetHandle": "tl",
-      "style": {
-        "stroke": "#000000"
-      },
-      "markerEnd": {
-        "type": "arrowclosed",
-        "color": "#000000",
-        "strokeWidth": "2px"
-      },
-      "id": "reactflow__edge-node-13sr-node-14tl"
-    },
-    {
-      "source": "node-11",
-      "sourceHandle": "sr",
-      "target": "node-14",
-      "targetHandle": "tl",
-      "style": {
-        "stroke": "#000000"
-      },
-      "markerEnd": {
-        "type": "arrowclosed",
-        "color": "#000000",
-        "strokeWidth": "2px"
-      },
-      "id": "reactflow__edge-node-11sr-node-14tl"
+      "id": "reactflow__edge-node-8sr-node-11sl",
+      "selected": false
     },
     {
       "source": "node-10",
       "sourceHandle": "sr",
       "target": "node-12",
-      "targetHandle": "tl",
+      "targetHandle": "sl",
       "style": {
         "stroke": "#000000"
       },
@@ -575,13 +613,13 @@
         "color": "#000000",
         "strokeWidth": "2px"
       },
-      "id": "reactflow__edge-node-10sr-node-12tl"
+      "id": "reactflow__edge-node-10sr-node-12sl"
     },
     {
-      "source": "node-10",
+      "source": "node-13",
       "sourceHandle": "sr",
-      "target": "node-13",
-      "targetHandle": "tl",
+      "target": "node-19",
+      "targetHandle": "sl",
       "style": {
         "stroke": "#000000"
       },
@@ -590,13 +628,13 @@
         "color": "#000000",
         "strokeWidth": "2px"
       },
-      "id": "reactflow__edge-node-10sr-node-13tl"
+      "id": "reactflow__edge-node-13sr-node-19sl"
     },
     {
       "source": "node-12",
       "sourceHandle": "sr",
-      "target": "node-14",
-      "targetHandle": "tl",
+      "target": "node-19",
+      "targetHandle": "sl",
       "style": {
         "stroke": "#000000"
       },
@@ -605,7 +643,22 @@
         "color": "#000000",
         "strokeWidth": "2px"
       },
-      "id": "reactflow__edge-node-12sr-node-14tl"
+      "id": "reactflow__edge-node-12sr-node-19sl"
+    },
+    {
+      "source": "node-11",
+      "sourceHandle": "sr",
+      "target": "node-19",
+      "targetHandle": "sl",
+      "style": {
+        "stroke": "#000000"
+      },
+      "markerEnd": {
+        "type": "arrowclosed",
+        "color": "#000000",
+        "strokeWidth": "2px"
+      },
+      "id": "reactflow__edge-node-11sr-node-19sl"
     }
   ]
 }
