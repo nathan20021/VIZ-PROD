@@ -1,0 +1,82 @@
+{
+  "box-1": {
+    "color": "#000000",
+    "bgColor": "#ffffff",
+    "url": "none",
+    "dashed": false,
+    "width": "200px",
+    "height": "200px",
+    "cornerIcon": false,
+    "bodySelectable": false
+  },
+  "box-2": {
+    "color": "#000000",
+    "bgColor": "#ffffff",
+    "url": "none",
+    "dashed": false,
+    "width": "200px",
+    "height": "200px",
+    "cornerIcon": false,
+    "bodySelectable": false
+  },
+  "box-3": {
+    "color": "#000000",
+    "bgColor": "#ffffff",
+    "url": "none",
+    "dashed": false,
+    "width": "200px",
+    "height": "200px",
+    "cornerIcon": false,
+    "bodySelectable": false
+  },
+  "Aws-Cluster": {
+    "color": "#333333",
+    "bgColor": "#eeeeee38",
+    "url": "aws-logo.jpeg",
+    "dashed": false,
+    "width": "200px",
+    "height": "200px",
+    "cornerIcon": true,
+    "bodySelectable": false
+  },
+  "Autoscaling-Group": {
+    "color": "#F08408",
+    "bgColor": "none",
+    "url": "aws-asset/Compute/Amazon-EC2-Auto-Scaling.png",
+    "dashed": true,
+    "width": "200px",
+    "height": "200px",
+    "cornerIcon": false,
+    "bodySelectable": false
+  },
+  "VPC-Group": {
+    "color": "#001797",
+    "bgColor": "none",
+    "url": "aws-asset/Networking-Content-Delivery/Amazon-Virtual-Private-Cloud.png",
+    "dashed": true,
+    "width": "200px",
+    "height": "200px",
+    "cornerIcon": false,
+    "bodySelectable": false
+  },
+  "Private-Subnet": {
+    "color": "#001797",
+    "bgColor": "none",
+    "url": "none",
+    "dashed": true,
+    "width": "200px",
+    "height": "200px",
+    "cornerIcon": false,
+    "bodySelectable": false
+  },
+  "Public-Subnet": {
+    "color": "#001797",
+    "bgColor": "none",
+    "url": "none",
+    "dashed": true,
+    "width": "200px",
+    "height": "200px",
+    "cornerIcon": false,
+    "bodySelectable": false
+  }
+}
