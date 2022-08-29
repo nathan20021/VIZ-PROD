@@ -879,7 +879,7 @@ const App = () => {
       >
         <div
           id="Side Bar"
-          className="w-[24%] h-full overflow-y-scroll z-50 shadow-2xl shadow-black select-none"
+          className="w-[24%] h-full overflow-y-scroll z-[100000] shadow-md shadow-[#979797] select-none"
           onMouseDown={(e) => {
             if (e.target.id.split("|").length === 2) {
               const key = e.target.id.split("|")[0];
@@ -887,13 +887,17 @@ const App = () => {
             }
           }}
           onMouseOver={(e) => {
-            if (e.target.src !== undefined) {
-              let url = e.target.src.toString();
-              setHoverImageURL(url);
-              setHoverAreaActivate(true);
-            } else if (e.target.id.split("|")[1] == "boundaryGrab") {
-              setHoverImageURL(e.target.id.split("|")[0]);
-              setHoverAreaActivate(true);
+            if (e.target.id !== "SearchBar") {
+              if (e.target.src !== undefined) {
+                let url = e.target.src.toString();
+                setHoverImageURL(url);
+                setHoverAreaActivate(true);
+              } else if (e.target.id.split("|")[1] === "boundaryGrab") {
+                setHoverImageURL(e.target.id.split("|")[0]);
+                setHoverAreaActivate(true);
+              }
+            } else {
+              setHoverAreaActivate(false);
             }
           }}
           onMouseLeave={() => {

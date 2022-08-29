@@ -1,14 +1,39 @@
 import React from "react";
-import awsSer from "../utils/aws-icon.json";
 import DropDown from "./Dropdown";
 
-const AwsServices = () => {
+const removeDashes = (str) => {
+  const replaceAt = function (index, replacement, string) {
+    return (
+      string.substring(0, index) +
+      replacement +
+      string.substring(index + replacement.length)
+    );
+  };
+  let result = str;
+  for (var i = 0; i < result.length; i++) {
+    result.charAt(i) === "-" ? (result = replaceAt(i, " ", result)) : void 0;
+    result.charAt(i) === "_" ? (result = replaceAt(i, " ", result)) : void 0;
+  }
+  return result;
+};
+const AwsServices = ({ awsSer, searchTerm }) => {
+  const filterSearchTerm = (names) => {
+    return removeDashes(names).toLowerCase().includes(searchTerm.toLowerCase());
+  };
   return (
-    <div className="absolute w-full z-50">
+    <div className="w-full z-50">
       {Object.keys(awsSer).map((key, index) => {
         return (
           <div key={index}>
-            <DropDown name={key} services={awsSer[key]} isArch={true} />
+            {awsSer[key].filter(filterSearchTerm).length !== 0 ? (
+              <DropDown
+                name={key}
+                services={awsSer[key].filter(filterSearchTerm)}
+                isArch={true}
+              />
+            ) : (
+              void 0
+            )}
           </div>
         );
       })}
