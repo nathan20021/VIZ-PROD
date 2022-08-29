@@ -22,7 +22,7 @@ const DropDown = ({ name, services, isArch }) => {
   return (
     <div className="w-full z-50">
       <div
-        className="w-full h-8 bg-[#333333] cursor-pointer max-h-max text-sm text-white flex 
+        className="w-full min-h-[2rem] bg-[#333333] cursor-pointer max-h-max text-sm text-white flex 
                   items-center gap-1 select-none border-b-white border-b-[1px] hover:bg-[#3f3f3f] font-bold"
         onClick={() => {
           setOpen(!open);
@@ -38,8 +38,8 @@ const DropDown = ({ name, services, isArch }) => {
       <div
         className={
           open
-            ? "visible flex justify-start p-3 flex-wrap gap-3 duration-300 z-50 select-none"
-            : "hidden duration-300 z-50 select-none"
+            ? "min-h-max visible flex justify-start p-3 flex-wrap gap-3 duration-300 z-50 select-none"
+            : "min-h-max hidden duration-300 z-50 select-none"
         }
       >
         {services.map((value, index) => (
