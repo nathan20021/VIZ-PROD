@@ -1,7 +1,10 @@
-import { Handle, Position } from "react-flow-renderer";
+import { Handle, Position, useStore } from "reactflow";
 import { useState } from "react";
 
+const connectionNodeIdSelector = (state) => state.connectionNodeId;
+
 function ServiceComponent({ data }) {
+  const connectionNodeId = useStore(connectionNodeIdSelector);
   const [hover, setHover] = useState(false);
 
   return (

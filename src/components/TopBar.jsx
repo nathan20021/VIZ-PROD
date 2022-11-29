@@ -53,11 +53,11 @@ const TopBar = () => {
                 />
               </p>
             </div>
-            <div id="menu" className="flex items-center gap-3">
-              <Menu className="text-sm">
+            <div id="menu" className="flex items-center gap-3 z-[100]">
+              <Menu className="text-sm z-[100]">
                 <MenuButton className="text-sm">File</MenuButton>
-                <MenuList className="flex flex-col text-xs">
-                  <MenuItem command="⌘N">New File</MenuItem>
+                <MenuList className="flex flex-col text-sm z-[100]">
+                  <MenuItem>New File</MenuItem>
                   <MenuItem command="⌘O">Open</MenuItem>
                   <MenuItem command="⌘S">Save</MenuItem>
                   <MenuItem command="⌘⇧E">Export</MenuItem>
@@ -65,7 +65,7 @@ const TopBar = () => {
               </Menu>
               <Menu className="text-sm">
                 <MenuButton className="text-sm">Edit</MenuButton>
-                <MenuList className="flex flex-col text-xs">
+                <MenuList className="flex flex-col text-sm">
                   <MenuItem command="⌘A">Select All</MenuItem>
                   <MenuItem command="⌘X">Cut</MenuItem>
                   <MenuItem command="⌘C">Copy</MenuItem>
@@ -77,7 +77,7 @@ const TopBar = () => {
               </Menu>
               <Menu className="text-sm">
                 <MenuButton className="text-sm">Insert</MenuButton>
-                <MenuList className="flex flex-col text-xs">
+                <MenuList className="flex flex-col text-sm">
                   <MenuItem>Viz diagram</MenuItem>
                   <MenuItem>Image</MenuItem>
                   <MenuItem>Video</MenuItem>
@@ -86,7 +86,7 @@ const TopBar = () => {
               </Menu>
               <Menu className="text-sm">
                 <MenuButton className="text-sm">Tool</MenuButton>
-                <MenuList className="flex flex-col text-xs">
+                <MenuList className="flex flex-col text-sm">
                   <MenuItem>Align Left</MenuItem>
                   <MenuItem>Alight Right</MenuItem>
                   <MenuItem>Alight Top</MenuItem>
@@ -99,7 +99,7 @@ const TopBar = () => {
               </Menu>
               <Menu className="text-sm">
                 <MenuButton className="text-sm">Help</MenuButton>
-                <MenuList className="flex flex-col text-xs">
+                <MenuList className="flex flex-col text-sm">
                   <MenuItem>Usage</MenuItem>
                   <MenuItem>Key Binding</MenuItem>
                 </MenuList>

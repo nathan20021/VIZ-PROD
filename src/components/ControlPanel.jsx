@@ -39,8 +39,12 @@ const ControlPanel = () => {
           <IoMdRedo />
         </button>
       </div>
-      <div id="font-styling-section" className={`${commonStyle} text-base`}>
+      <div
+        id="font-styling-section"
+        className="button-container flex justify-center items-center gap-3 text-xs border-l-2 text-base"
+      >
         <button
+          className="hover:bg-[#aaaaaa] p-[0.3rem]"
           onClick={() => {
             dispatch({ type: "DECREASE_FONT" });
           }}
@@ -54,6 +58,7 @@ const ControlPanel = () => {
           onChange={() => {}}
         />
         <button
+          className="hover:bg-[#aaaaaa] p-[0.3rem]"
           onClick={() => {
             dispatch({ type: "INCREASE_FONT" });
           }}
@@ -65,6 +70,7 @@ const ControlPanel = () => {
         <button
           className={currentTextNodeId === null ? `` : `hover:bg-[#aaaaaa]`}
           style={{
+            padding: "0.4rem",
             backgroundColor: toolBarState.bold ? `#aaaaaa` : ``,
             color: currentTextNodeId === null ? `#aaaaaa` : ``,
           }}
@@ -78,6 +84,7 @@ const ControlPanel = () => {
         <button
           className={currentTextNodeId === null ? `` : `hover:bg-[#aaaaaa]`}
           style={{
+            padding: "0.4rem",
             backgroundColor: toolBarState.italic ? `#aaaaaa` : ``,
             color: currentTextNodeId === null ? `#aaaaaa` : ``,
           }}
@@ -91,6 +98,7 @@ const ControlPanel = () => {
         <button
           className={currentTextNodeId === null ? `` : `hover:bg-[#aaaaaa]`}
           style={{
+            padding: "0.4rem",
             backgroundColor: toolBarState.underline ? `#aaaaaa` : ``,
             color: currentTextNodeId === null ? `#aaaaaa` : ``,
           }}
@@ -104,6 +112,7 @@ const ControlPanel = () => {
         <button
           className={currentTextNodeId === null ? `` : `hover:bg-[#aaaaaa]`}
           style={{
+            padding: "0.4rem",
             color: currentTextNodeId === null ? `#aaaaaa` : ``,
           }}
           onClick={() => {
@@ -117,6 +126,7 @@ const ControlPanel = () => {
       <div id="textTool-section" className={commonStyle}>
         <button
           style={{
+            padding: "0.4rem",
             backgroundColor: toolBarState.textTool ? `#aaaaaa` : ``,
           }}
           onClick={() => {
