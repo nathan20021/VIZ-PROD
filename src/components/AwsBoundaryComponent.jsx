@@ -13,12 +13,12 @@ function BoundaryComponent({ data }) {
     let height = parseInt(styles.height, 10);
     let x = 0;
     let y = 0;
-
+    const scalingConst = 3.5;
     // Right resize
     const onMouseMoveRightResize = (event) => {
       const dx = event.clientX - x;
       x = event.clientX;
-      width = width + dx;
+      width = width + dx / scalingConst;
       resizeableEle.style.width = `${width}px`;
     };
 
@@ -35,7 +35,7 @@ function BoundaryComponent({ data }) {
     };
     const onMouseMoveBottomResize = (event) => {
       const dy = event.clientY - y;
-      height = height + dy;
+      height = height + dy / scalingConst;
       y = event.clientY;
       resizeableEle.style.height = `${height}px`;
     };

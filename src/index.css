@@ -4,6 +4,7 @@
 
 html {
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .react-flow__attribution {

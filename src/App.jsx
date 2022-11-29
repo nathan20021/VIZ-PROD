@@ -14,17 +14,20 @@ import ReactFlow, {
   Background,
   Controls,
   MarkerType,
-} from "react-flow-renderer";
+  useNodesState,
+  useEdgesState,
+} from "reactflow";
+import "reactflow/dist/style.css";
 import { useSelector, useDispatch } from "react-redux";
 
 import ServiceComponent from "./components/ServiceComponent";
 import BoundaryComponent from "./components/AwsBoundaryComponent";
 import TextUpdaterNode from "./components/TextUpdaterNode";
-
 import HeaderNode from "./components/HeaderNode";
 import boundaryJson from "./utils/boundary-icon.json";
 import ControlPanel from "./components/ControlPanel";
 import TopBar from "./components/TopBar";
+import useHotkeys from "@reecelucas/react-use-hotkeys";
 
 const removeDashes = (str) => {
   const replaceAt = function (index, replacement, string) {
@@ -58,20 +61,55 @@ const listOfBoundaries = Object.keys(boundaryJson);
 
 const initialEdges = [
   {
-    source: "node-7",
+    source: "node-5",
     sourceHandle: "sr",
-    target: "node-8",
+    target: "node-6",
     targetHandle: "sl",
     style: {
       stroke: "#000000",
+      cursor: "pointer",
     },
     markerEnd: {
       type: "arrowclosed",
       color: "#000000",
       strokeWidth: "2px",
     },
-    id: "reactflow__edge-node-7sr-node-8sl",
-    selected: false,
+    id: "reactflow__edge-node-5sr-node-6sl",
+    interactionWidth: 20,
+  },
+  {
+    source: "node-4",
+    sourceHandle: "sr",
+    target: "node-6",
+    targetHandle: "sl",
+    style: {
+      stroke: "#000000",
+      cursor: "pointer",
+    },
+    markerEnd: {
+      type: "arrowclosed",
+      color: "#000000",
+      strokeWidth: "2px",
+    },
+    interactionWidth: 20,
+    id: "reactflow__edge-node-4sr-node-6sl",
+  },
+  {
+    source: "node-6",
+    sourceHandle: "sr",
+    target: "node-7",
+    targetHandle: "sl",
+    style: {
+      stroke: "#000000",
+      cursor: "pointer",
+    },
+    markerEnd: {
+      type: "arrowclosed",
+      color: "#000000",
+      strokeWidth: "2px",
+    },
+    interactionWidth: 20,
+    id: "reactflow__edge-node-6sr-node-7sl",
   },
   {
     source: "node-6",
@@ -80,61 +118,32 @@ const initialEdges = [
     targetHandle: "sl",
     style: {
       stroke: "#000000",
+      cursor: "pointer",
     },
     markerEnd: {
       type: "arrowclosed",
       color: "#000000",
       strokeWidth: "2px",
     },
+    interactionWidth: 20,
     id: "reactflow__edge-node-6sr-node-8sl",
-    selected: false,
   },
   {
-    source: "node-8",
-    sourceHandle: "sr",
-    target: "node-10",
-    targetHandle: "sl",
-    style: {
-      stroke: "#000000",
-    },
-    markerEnd: {
-      type: "arrowclosed",
-      color: "#000000",
-      strokeWidth: "2px",
-    },
-    id: "reactflow__edge-node-8sr-node-10sl",
-    selected: false,
-  },
-  {
-    source: "node-10",
-    sourceHandle: "sr",
-    target: "node-13",
-    targetHandle: "sl",
-    style: {
-      stroke: "#000000",
-    },
-    markerEnd: {
-      type: "arrowclosed",
-      color: "#000000",
-      strokeWidth: "2px",
-    },
-    id: "reactflow__edge-node-10sr-node-13sl",
-  },
-  {
-    source: "node-8",
+    source: "node-6",
     sourceHandle: "sr",
     target: "node-9",
     targetHandle: "sl",
     style: {
       stroke: "#000000",
+      cursor: "pointer",
     },
     markerEnd: {
       type: "arrowclosed",
       color: "#000000",
       strokeWidth: "2px",
     },
-    id: "reactflow__edge-node-8sr-node-9sl",
-    selected: false,
+    interactionWidth: 20,
+    id: "reactflow__edge-node-6sr-node-9sl",
   },
   {
     source: "node-8",
@@ -143,74 +152,101 @@ const initialEdges = [
     targetHandle: "sl",
     style: {
       stroke: "#000000",
+      cursor: "pointer",
     },
     markerEnd: {
       type: "arrowclosed",
       color: "#000000",
       strokeWidth: "2px",
     },
+    interactionWidth: 20,
     id: "reactflow__edge-node-8sr-node-11sl",
-    selected: false,
   },
   {
-    source: "node-10",
+    source: "node-8",
     sourceHandle: "sr",
-    target: "node-12",
+    target: "node-10",
     targetHandle: "sl",
     style: {
       stroke: "#000000",
+      cursor: "pointer",
     },
     markerEnd: {
       type: "arrowclosed",
       color: "#000000",
       strokeWidth: "2px",
     },
-    id: "reactflow__edge-node-10sr-node-12sl",
+    interactionWidth: 20,
+    id: "reactflow__edge-node-8sr-node-10sl",
   },
   {
-    source: "node-13",
-    sourceHandle: "sr",
-    target: "node-19",
-    targetHandle: "sl",
+    source: "node-7",
+    sourceHandle: "sl",
+    target: "node-6",
+    targetHandle: "sr",
     style: {
       stroke: "#000000",
+      cursor: "pointer",
     },
     markerEnd: {
       type: "arrowclosed",
       color: "#000000",
       strokeWidth: "2px",
     },
-    id: "reactflow__edge-node-13sr-node-19sl",
-  },
-  {
-    source: "node-12",
-    sourceHandle: "sr",
-    target: "node-19",
-    targetHandle: "sl",
-    style: {
-      stroke: "#000000",
-    },
-    markerEnd: {
-      type: "arrowclosed",
-      color: "#000000",
-      strokeWidth: "2px",
-    },
-    id: "reactflow__edge-node-12sr-node-19sl",
+    interactionWidth: 20,
+    id: "reactflow__edge-node-7sl-node-6sr",
   },
   {
     source: "node-11",
     sourceHandle: "sr",
-    target: "node-19",
+    target: "node-18",
     targetHandle: "sl",
     style: {
       stroke: "#000000",
+      cursor: "pointer",
     },
     markerEnd: {
       type: "arrowclosed",
       color: "#000000",
       strokeWidth: "2px",
     },
-    id: "reactflow__edge-node-11sr-node-19sl",
+    interactionWidth: 20,
+    id: "reactflow__edge-node-11sr-node-18sl",
+  },
+  {
+    source: "node-10",
+    sourceHandle: "sr",
+    target: "node-18",
+    targetHandle: "sl",
+    style: {
+      stroke: "#000000",
+      cursor: "pointer",
+    },
+    markerEnd: {
+      type: "arrowclosed",
+      color: "#000000",
+      strokeWidth: "2px",
+    },
+    interactionWidth: 20,
+    id: "reactflow__edge-node-10sr-node-18sl",
+    selected: false,
+  },
+  {
+    source: "node-9",
+    sourceHandle: "sr",
+    target: "node-18",
+    targetHandle: "sl",
+    style: {
+      stroke: "#000000",
+      cursor: "pointer",
+    },
+    markerEnd: {
+      type: "arrowclosed",
+      color: "#000000",
+      strokeWidth: "2px",
+    },
+    interactionWidth: 20,
+    id: "reactflow__edge-node-9sr-node-18sl",
   },
 ];
 const initialNodes = [
@@ -244,7 +280,7 @@ const initialNodes = [
     dragging: false,
   },
   {
-    id: "node-2",
+    id: "node-1",
     type: "headerNode",
     position: {
       x: 48.61066942324078,
@@ -260,7 +296,7 @@ const initialNodes = [
     dragging: false,
   },
   {
-    id: "node-3",
+    id: "node-2",
     type: "boundaryNode",
     position: {
       x: -14.990545188792225,
@@ -276,7 +312,7 @@ const initialNodes = [
       height: "200px",
       cornerIcon: false,
       bodySelectable: false,
-      nodeId: "node-3",
+      nodeId: "node-2",
     },
     width: 205,
     height: 154,
@@ -289,7 +325,7 @@ const initialNodes = [
     dragging: false,
   },
   {
-    id: "node-6",
+    id: "node-3",
     type: "serviceComponent",
     position: {
       x: 39.86592722320245,
@@ -308,7 +344,7 @@ const initialNodes = [
     dragging: false,
   },
   {
-    id: "node-6",
+    id: "node-4",
     type: "serviceComponent",
     position: {
       x: 39.86592722320245,
@@ -327,7 +363,7 @@ const initialNodes = [
     height: 30,
   },
   {
-    id: "node-7",
+    id: "node-5",
     type: "serviceComponent",
     position: {
       x: 36.85477445790053,
@@ -346,7 +382,7 @@ const initialNodes = [
     dragging: false,
   },
   {
-    id: "node-8",
+    id: "node-6",
     type: "serviceComponent",
     position: {
       x: 116.69863574367338,
@@ -365,7 +401,7 @@ const initialNodes = [
     dragging: false,
   },
   {
-    id: "node-9",
+    id: "node-7",
     type: "serviceComponent",
     position: {
       x: 272.87150360585343,
@@ -384,7 +420,7 @@ const initialNodes = [
     dragging: false,
   },
   {
-    id: "node-10",
+    id: "node-8",
     type: "serviceComponent",
     position: {
       x: 274.40435444764876,
@@ -403,7 +439,7 @@ const initialNodes = [
     dragging: false,
   },
   {
-    id: "node-11",
+    id: "node-9",
     type: "serviceComponent",
     position: {
       x: 358.9842982433496,
@@ -422,7 +458,7 @@ const initialNodes = [
     dragging: false,
   },
   {
-    id: "node-12",
+    id: "node-10",
     type: "serviceComponent",
     position: {
       x: 378.0475128910977,
@@ -441,7 +477,7 @@ const initialNodes = [
     dragging: false,
   },
   {
-    id: "node-13",
+    id: "node-11",
     type: "serviceComponent",
     position: {
       x: 379.55308927374864,
@@ -460,26 +496,7 @@ const initialNodes = [
     dragging: false,
   },
   {
-    id: "node-14",
-    type: "serviceComponent",
-    position: {
-      x: 264.8797274056039,
-      y: 373.1340472621199,
-    },
-    data: {
-      url: "aws-asset/Storage/Amazon-Simple-Storage-Service.png",
-    },
-    width: 65,
-    height: 17,
-    selected: false,
-    positionAbsolute: {
-      x: 264.8797274056039,
-      y: 373.1340472621199,
-    },
-    dragging: false,
-  },
-  {
-    id: "node-14",
+    id: "node-13",
     type: "textUpdater",
     position: {
       x: 264.8797274056039,
@@ -487,7 +504,7 @@ const initialNodes = [
     },
     data: {
       value: "Telemetry",
-      nodeId: "node-14",
+      nodeId: "node-13",
     },
     width: 65,
     height: 17,
@@ -499,7 +516,7 @@ const initialNodes = [
     dragging: false,
   },
   {
-    id: "node-15",
+    id: "node-14",
     type: "textUpdater",
     position: {
       x: 326.3797274056039,
@@ -507,7 +524,7 @@ const initialNodes = [
     },
     data: {
       value: "Kinesis Firehose",
-      nodeId: "node-15",
+      nodeId: "node-14",
     },
     width: 108,
     height: 17,
@@ -519,7 +536,7 @@ const initialNodes = [
     dragging: false,
   },
   {
-    id: "node-16",
+    id: "node-15",
     type: "textUpdater",
     position: {
       x: 13.379727405603887,
@@ -527,7 +544,7 @@ const initialNodes = [
     },
     data: {
       value: "IOT Devices",
-      nodeId: "node-16",
+      nodeId: "node-15",
     },
     width: 81,
     height: 17,
@@ -539,7 +556,7 @@ const initialNodes = [
     dragging: false,
   },
   {
-    id: "node-17",
+    id: "node-16",
     type: "textUpdater",
     position: {
       x: 96.87972740560389,
@@ -547,7 +564,7 @@ const initialNodes = [
     },
     data: {
       value: "Studio Host",
-      nodeId: "node-17",
+      nodeId: "node-16",
     },
     width: 81,
     height: 17,
@@ -559,7 +576,7 @@ const initialNodes = [
     dragging: false,
   },
   {
-    id: "node-18",
+    id: "node-17",
     type: "textUpdater",
     position: {
       x: 48.87972740560389,
@@ -567,7 +584,7 @@ const initialNodes = [
     },
     data: {
       value: "Studio",
-      nodeId: "node-18",
+      nodeId: "node-17",
     },
     width: 62,
     height: 21,
@@ -579,7 +596,7 @@ const initialNodes = [
     dragging: false,
   },
   {
-    id: "node-19",
+    id: "node-18",
     type: "serviceComponent",
     position: {
       x: 530.879727405604,
@@ -598,7 +615,7 @@ const initialNodes = [
     dragging: false,
   },
   {
-    id: "node-20",
+    id: "node-19",
     type: "textUpdater",
     position: {
       x: 528.879727405604,
@@ -606,7 +623,7 @@ const initialNodes = [
     },
     data: {
       value: "S3",
-      nodeId: "node-20",
+      nodeId: "node-19",
     },
     width: 31,
     height: 17,
@@ -618,7 +635,7 @@ const initialNodes = [
     dragging: false,
   },
   {
-    id: "node-21",
+    id: "node-20",
     type: "textUpdater",
     position: {
       x: 252.87972740560383,
@@ -626,7 +643,7 @@ const initialNodes = [
     },
     data: {
       value: "API Gateway",
-      nodeId: "node-21",
+      nodeId: "node-20",
     },
     width: 81,
     height: 17,
@@ -638,7 +655,7 @@ const initialNodes = [
     dragging: false,
   },
   {
-    id: "node-22",
+    id: "node-21",
     type: "textUpdater",
     position: {
       x: 258.37972740560383,
@@ -646,7 +663,7 @@ const initialNodes = [
     },
     data: {
       value: "Cognito",
-      nodeId: "node-22",
+      nodeId: "node-21",
     },
     width: 59,
     height: 17,
@@ -658,7 +675,7 @@ const initialNodes = [
     dragging: false,
   },
   {
-    id: "node-23",
+    id: "node-22",
     type: "textUpdater",
     position: {
       x: 374.8797274056039,
@@ -666,7 +683,7 @@ const initialNodes = [
     },
     data: {
       value: "EC2",
-      nodeId: "node-23",
+      nodeId: "node-22",
     },
     width: 37,
     height: 17,
@@ -678,7 +695,7 @@ const initialNodes = [
     dragging: false,
   },
   {
-    id: "node-24",
+    id: "node-23",
     type: "textUpdater",
     position: {
       x: 369.3797274056039,
@@ -686,7 +703,7 @@ const initialNodes = [
     },
     data: {
       value: "Lambda",
-      nodeId: "node-24",
+      nodeId: "node-23",
     },
     width: 53,
     height: 17,
@@ -698,7 +715,7 @@ const initialNodes = [
     dragging: false,
   },
   {
-    id: "node-25",
+    id: "node-24",
     type: "textUpdater",
     position: {
       x: 513.879727405604,
@@ -706,7 +723,7 @@ const initialNodes = [
     },
     data: {
       value: "Data Lake",
-      nodeId: "node-25",
+      nodeId: "node-24",
     },
     width: 65,
     height: 17,
@@ -722,14 +739,16 @@ const App = () => {
   const dispatch = useDispatch();
   const reactFlowWrapper = useRef(null);
   const sideBox = useRef(null);
+  const sideBarState = useSelector((state) => state.sideBarState);
   const textTool = useSelector((state) => state.toolBarState.textTool);
   const headerTitle = useSelector((state) => state.headerTitle);
   const currentTextNodeId = useSelector((state) => state.currentTextNodeId);
   const deleteRequest = useSelector((state) => state.deleteNodeRequest);
   const [dragging, setDragging] = useState(false);
+  const [resizing, setResizing] = useState(true);
   const [currentURL, setCurrentURL] = useState("None");
-  const [nodes, setNodes] = useState(initialNodes);
-  const [edges, setEdges] = useState(initialEdges);
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [hoverImageURL, setHoverImageURL] = useState(
     "aws-asset/Compute/Amazon-EC2.png"
   );
@@ -750,26 +769,19 @@ const App = () => {
     []
   );
 
-  const onNodesChange = useCallback(
-    (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
-    [setNodes]
-  );
-  const onEdgesChange = useCallback(
-    (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
-    [setEdges]
-  );
   const onConnect = useCallback(
     (connection) => {
       setEdges((eds) =>
         addEdge(
           {
             ...connection,
-            style: { stroke: "#000000" },
+            style: { stroke: "#000000", cursor: "pointer" },
             markerEnd: {
               type: MarkerType.ArrowClosed,
               color: "#000000",
               strokeWidth: "2px",
             },
+            interactionWidth: 3,
           },
           eds
         )
@@ -777,6 +789,7 @@ const App = () => {
     },
     [setEdges]
   );
+
   const onDrop = useCallback((e) => {
     e.preventDefault();
     if (currentURL !== "None") {
@@ -813,6 +826,7 @@ const App = () => {
       );
     }
   });
+
   const onDragStart = useCallback((e) => {
     setDragging(true);
     if (e.target.src !== undefined) {
@@ -820,18 +834,20 @@ const App = () => {
       setCurrentURL(`aws-asset${data[data.length - 1]}`);
     }
   });
+
   const onDropMain = useCallback((e) => {
     setDragging(false);
     setHoverAreaActivate(false);
   });
+
   const onDragOverMain = useCallback((e) => {
     e.preventDefault();
     setDragging(true);
   });
 
   const onClickMain = useCallback((e) => {
-    console.log(nodes);
-    console.log(edges);
+    // console.log(nodes);
+    // console.log(edges);
     e.target.id.split("|")[0] === "textUpdater"
       ? dispatch({
           type: "SET_CURRENT_NODE_ID",
@@ -843,6 +859,9 @@ const App = () => {
         });
   });
 
+  const onKeyDownMain = useCallback((e) => {
+    dispatch({ type: "SET_CURRENT_KEY", payload: e.key });
+  })
   useEffect(() => {
     window.onbeforeunload = function (e) {
       return "Do you want to exit this page?";
@@ -858,8 +877,23 @@ const App = () => {
   }, [deleteRequest]);
 
   useEffect(() => {
-    document.title = `Viz - ${headerTitle}`;
+    document.title = `${headerTitle}`;
   }, [headerTitle]);
+
+  useHotkeys(["control+z", "meta+z"], (e) => {
+    e.preventDefault();
+    console.log("UNDOOOO");
+  });
+
+  useHotkeys(["control+shift+z", "meta+shift+z"], (e) => {
+    e.preventDefault();
+    console.log("REDOOOO");
+  });
+
+  useHotkeys(["control+s", "meta+s"], (e) => {
+    e.preventDefault();
+    console.log("Saving this shit");
+  });
   return (
     <main className="overflow-hidden h-screen">
       <div className="h-[10%] w-full">
@@ -879,13 +913,11 @@ const App = () => {
       >
         <div
           id="Side Bar"
-          className="w-[24%] h-full overflow-y-scroll z-[100000] shadow-md shadow-[#979797] select-none"
-          onMouseDown={(e) => {
-            if (e.target.id.split("|").length === 2) {
-              const key = e.target.id.split("|")[0];
-              setCurrentBoundaryData(boundaryJson[key]);
-            }
-          }}
+          className={
+            sideBarState
+              ? `w-[24%] h-full overflow-y-scroll z-[99] select-none shadow-md shadow-[#979797]`
+              : `hidden`
+          }
           onMouseOver={(e) => {
             if (e.target.id !== "SearchBar") {
               if (e.target.src !== undefined) {
@@ -906,12 +938,17 @@ const App = () => {
         >
           <SideBar />
         </div>
+
         <div
           id="EditorContainer"
           style={{
             cursor: textTool ? `text` : `default`,
           }}
-          className="w-[85%] h-full relative bg-white z-50"
+          className={
+            sideBarState
+              ? `w-[85%] h-full relative bg-white z-50`
+              : `w-[100%] h-full relative bg-white z-50`
+          }
           onMouseUp={(e) => {
             if (Object.keys(currentBoundaryData).length !== 0) {
               const reactFlowBounds =
@@ -1087,7 +1124,17 @@ const App = () => {
                 onConnect={onConnect}
                 nodeTypes={nodeTypes}
                 onClick={onClickMain}
+                onKeyDown={onKeyDownMain}
+                deleteKeyCode={["Shift + BackSpace"]}
+                onMouseOver={(e)=>{
+                  e.target.id.split("|")[0] === "resizer" ? setResizing(false) : void 0
+                  }
+                }
+                onMouseUp={(e)=>{
+                    e.target.id.split("|")[0] === "resizer" && resizing? void 0 : setResizing(true)
+                }}
                 onInit={setReactFlowInstance}
+                panOnDrag={resizing}
                 onDrop={onDrop}
                 connectionMode="loose"
                 fitView

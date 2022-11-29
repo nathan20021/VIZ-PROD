@@ -5,22 +5,22 @@ import BoundaryDropdown from "./BoundaryDropdown";
 
 import awsSer from "../utils/aws-icon.json";
 import awsRes from "../utils/aws-icon-res.json";
-import { BiSearch } from "react-icons/bi";
+import { BiSearch, BiLeftArrow } from "react-icons/bi";
 
 const SideBar = () => {
   const [isArch, setIsArch] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
 
   return (
-    <div className="relative w-full z-40 min-h-max shadow-md shadow-[#d4d4d4]">
-      <div className="top-0 sticky z-[10000] bg-white ">
-        <div
-          id="SearchBar"
-          className="flex justify-center items-center h-10 text-sm "
-        >
-          <div className="flex justify-center items-center py-2 w-full h-full">
+    <div className="relative w-full z-40 min-h-max">
+      <div className="top-0 sticky z-[99] bg-white ">
+        <div className="flex justify-center items-center h-10 text-sm ">
+          <div
+            className="flex justify-center items-center py-2 w-full h-full"
+            id="SearchBar"
+          >
             <input
-              className="w-[70%] h-full border-2 border-[#000000] indent-3 rounded-l-md text-xs 
+              className="w-[50%] h-full border-2 border-[#000000] indent-3 rounded-l-md text-xs 
             focus:outline-none focus:rounded-l-md focus:border-[#1650b5]"
               autoComplete="off"
               id="SearchBar"
@@ -35,6 +35,7 @@ const SideBar = () => {
               <BiSearch />
             </div>
           </div>
+          <div></div>
         </div>
         <div className="res-arch-switch flex text-base justify-around border-b-[#f0eeee] border-b-2">
           <div
