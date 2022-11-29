@@ -846,8 +846,8 @@ const App = () => {
   });
 
   const onClickMain = useCallback((e) => {
-    console.log(nodes);
-    console.log(edges);
+    // console.log(nodes);
+    // console.log(edges);
     e.target.id.split("|")[0] === "textUpdater"
       ? dispatch({
           type: "SET_CURRENT_NODE_ID",
@@ -859,6 +859,9 @@ const App = () => {
         });
   });
 
+  const onKeyDownMain = useCallback((e) => {
+    dispatch({ type: "SET_CURRENT_KEY", payload: e.key });
+  })
   useEffect(() => {
     window.onbeforeunload = function (e) {
       return "Do you want to exit this page?";
@@ -1121,6 +1124,8 @@ const App = () => {
                 onConnect={onConnect}
                 nodeTypes={nodeTypes}
                 onClick={onClickMain}
+                onKeyDown={onKeyDownMain}
+                deleteKeyCode={["Shift + BackSpace"]}
                 onMouseOver={(e)=>{
                   e.target.id.split("|")[0] === "resizer" ? setResizing(false) : void 0
                   }

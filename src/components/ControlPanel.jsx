@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { IoText } from "react-icons/io5";
-
+import ColorPicker from "./ColorPicker";
 import { useSelector, useDispatch } from "react-redux";
 import { FaBold } from "react-icons/fa";
 import { FiUnderline, FiItalic } from "react-icons/fi";
@@ -122,6 +122,19 @@ const ControlPanel = () => {
         >
           <AiFillDelete />
         </button>
+        {/* <div
+          className={currentTextNodeId === null ? `` : `hover:bg-[#aaaaaa]`}
+          style={{
+            padding: "0.4rem",
+            color: currentTextNodeId === null ? `#aaaaaa` : ``,
+          }}
+          onClick={() => {
+            dispatch({ type: "DELETE_NODE" });
+          }}
+          disabled={currentTextNodeId === null}
+        >
+          <ColorPicker />
+        </div> */}
       </div>
       <div id="textTool-section" className={commonStyle}>
         <button
