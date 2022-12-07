@@ -6,7 +6,6 @@ function TextUpdaterNode({ data }) {
   const [fontSize, setFontSize] = useState(11);
   const [isBold, setBold] = useState(false);
   const [isItalic, setItalic] = useState(false);
-  const [readOnly, setReadOnly] = useState(true);
   const [isUnderline, setUnderline] = useState(false);
   const toolBarState = useSelector((state) => state.toolBarState);
   const CurrentTextNodeID = useSelector((state) => state.currentTextNodeId);
@@ -30,11 +29,6 @@ function TextUpdaterNode({ data }) {
       : void 0;
   }, [toolBarState.underline]);
   useEffect(() => {
-    if (CurrentTextNodeID == null) {
-      setReadOnly(true);
-    }
-  }, [CurrentTextNodeID]);
-  useEffect(() => {
     setInputString((prev) => {
       if(currentKeyPressed !== undefined && CurrentTextNodeID === data.nodeId){
         console.log("hahaah")
@@ -45,7 +39,6 @@ function TextUpdaterNode({ data }) {
           return prev + currentKeyPressed
         }
       }
-      dispatch({ type: "SET_CURRENT_KEY", payload: undefined });
       return prev
     })
   }, [currentKeyPressed])
