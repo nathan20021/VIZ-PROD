@@ -1,5 +1,5 @@
 {
-    "initialEdges" : [
+    "defaultEdges" : [
         {
         "source": "node-5",
         "sourceHandle": "sr",
@@ -189,7 +189,7 @@
         "id": "reactflow__edge-node-9sr-node-18sl"
     }
     ],
-    "initialNodes" : [
+    "defaultNodes" : [
     {
         "id": "node-0",
         "type": "boundaryNode",

@@ -20,6 +20,8 @@ import ReactFlow, {
 import "reactflow/dist/style.css";
 import { useSelector, useDispatch } from "react-redux";
 
+import defaultFlow from "./utils/initials.json"
+
 import ServiceComponent from "./components/ServiceComponent";
 import BoundaryComponent from "./components/AwsBoundaryComponent";
 import TextUpdaterNode from "./components/TextUpdaterNode";
@@ -59,156 +61,10 @@ const toImageNameFromURL = (url) => {
 };
 const listOfBoundaries = Object.keys(boundaryJson);
 
-const initialEdges = []
-const initialNodes = [
-  {   "id": "node-0",
-        "type": "boundaryNode",
-        "draggable": false,
-        "position": {
-        "x": 210,
-        "y": 179.5
-        },
-        "zIndex": -1,
-        "data": {
-        "nodeId": "node-0",
-        "color": "#333333",
-        "bgColor": "#eeeeee38",
-        "url": "aws-logo.jpeg",
-        "dashed": false,
-        "width": "400px",
-        "height": "300px",
-        "cornerIcon": true,
-        "bodySelectable": false
-        },
-        "width": 385,
-        "height": 255,
-        "selected": false,
-        "positionAbsolute": {
-        "x": 210,
-        "y": 179.5
-        },
-        "dragging": false
-  },
-  { "id": "node-1",
-    "type": "headerNode",
-    "position": {
-      x: 48.61066942324078,
-      y: 104.86184452423977,
-    }
-  },
-  {  "id": "node-2",
-      "type": "boundaryNode",
-      "draggable": false,
-      "position": {
-        "x": 210,
-        "y": 179.5
-      },
-      "zIndex": -1,
-      "data": {
-        "nodeId": "node-2",
-        "color": "#001797",
-        "bgColor": "none",
-        "url": "none",
-        "dashed": true,
-        "width": "200px",
-        "height": "200px",
-        "cornerIcon": false,
-        "bodySelectable": false
-      },
-      "width": 385,
-      "height": 255,
-      "selected": false,
-      "positionAbsolute": {
-        "x": 210,
-        "y": 179.5
-      },
-      "dragging": false
-  },
-  {  "id": "node-3",
-      "type": "boundaryNode",
-      "draggable": false,
-      "position": {
-        "x": 210,
-        "y": 179.5
-      },
-      "zIndex": -1,
-      "data": {
-        "nodeId": "node-3",
-        "color": "#001797",
-        "bgColor": "none",
-        "url": "none",
-        "dashed": true,
-        "width": "200px",
-        "height": "200px",
-        "cornerIcon": false,
-        "bodySelectable": false
-      },
-      "width": 385,
-      "height": 255,
-      "selected": false,
-      "positionAbsolute": {
-        "x": 210,
-        "y": 179.5
-      },
-      "dragging": false
-  },
-  {  "id": "node-4",
-      "type": "boundaryNode",
-      "draggable": false,
-      "position": {
-        "x": 210,
-        "y": 179.5
-      },
-      "zIndex": -1,
-      "data": {
-        "nodeId": "node-4",
-        "color": "#001797",
-        "bgColor": "none",
-        "url": "none",
-        "dashed": true,
-        "width": "200px",
-        "height": "200px",
-        "cornerIcon": false,
-        "bodySelectable": false
-      },
-      "width": 385,
-      "height": 255,
-      "selected": false,
-      "positionAbsolute": {
-        "x": 210,
-        "y": 179.5
-      },
-      "dragging": false
-  },
-  {  "id": "node-5",
-      "type": "boundaryNode",
-      "draggable": false,
-      "position": {
-        "x": 210,
-        "y": 179.5
-      },
-      "zIndex": -1,
-      "data": {
-        "nodeId": "node-5",
-        "color": "#001797",
-        "bgColor": "none",
-        "url": "none",
-        "dashed": true,
-        "width": "200px",
-        "height": "200px",
-        "cornerIcon": false,
-        "bodySelectable": false
-      },
-      "width": 385,
-      "height": 255,
-      "selected": false,
-      "positionAbsolute": {
-        "x": 210,
-        "y": 179.5
-      },
-      "dragging": false
-  },
-]
+const initialEdges = defaultFlow.defaultEdges
+
+const initialNodes = defaultFlow.defaultNodes
+
 const App = () => {
   const dispatch = useDispatch();
   const reactFlowWrapper = useRef(null);
@@ -320,24 +176,14 @@ const App = () => {
   });
 
   const onClickMain = useCallback((e) => {
-    // console.log(nodes);
-    // console.log(edges);
-    e.target.id.split("|")[0] === "textUpdater"
-      ? dispatch({
-          type: "SET_CURRENT_NODE_ID",
-          payload: e.target.id.split("|")[1],
-        })
-      : dispatch({
-          type: "SET_CURRENT_NODE_ID",
-          payload: null,
-        });
+    e.target.id === "text-updater"? void 0 : dispatch({ type: "SET_CURRENT_NODE_ID", payload: null });
   });
 
   const onKeyDownMain = useCallback((e) => {
-    dispatch({ type: "SET_CURRENT_KEY", payload: e.key });
+    // dispatch({ type: "SET_CURRENT_KEY", payload: e.key });
   })
   const onKeyUpMain = useCallback((e) => {
-    dispatch({ type: "SET_CURRENT_KEY", payload: undefined });
+    // dispatch({ type: "SET_CURRENT_KEY", payload: undefined });
   })
 
   const onMouseOverSidebar = (e) => {
@@ -608,7 +454,7 @@ const App = () => {
                   onClick={onClickMain}
                   onKeyDown={onKeyDownMain}
                   onKeyUp={onKeyUpMain}
-                  deleteKeyCode={"`"}
+                  disableKeyboardA11y={true}
                   onMouseOver={(e)=>{
                     e.target.id.split("|")[0] === "resizer" ? setResizing(false) : void 0
                     }

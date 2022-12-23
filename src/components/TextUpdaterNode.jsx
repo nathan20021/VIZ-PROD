@@ -1,16 +1,23 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 function TextUpdaterNode({ data }) {
   const [inputString, setInputString] = useState(data.value);
+  const [width, setWidth] = useState(0);
+  const span = useRef();
+  const inputField = useRef();
+
   const [fontSize, setFontSize] = useState(11);
   const [isBold, setBold] = useState(false);
   const [isItalic, setItalic] = useState(false);
   const [isUnderline, setUnderline] = useState(false);
   const toolBarState = useSelector((state) => state.toolBarState);
   const CurrentTextNodeID = useSelector((state) => state.currentTextNodeId);
-  const currentKeyPressed = useSelector((state) => state.userControlState.currentKey);
   const dispatch = useDispatch();
+
+  const changeHandler = evt => {
+    setInputString(evt.target.value);
+  };
 
   useEffect(() => {
     CurrentTextNodeID === data.nodeId
@@ -18,7 +25,9 @@ function TextUpdaterNode({ data }) {
       : void 0;
   }, [toolBarState.fontSize]);
   useEffect(() => {
-    CurrentTextNodeID === data.nodeId ? setBold(toolBarState.bold) : void 0;
+    if (CurrentTextNodeID === data.nodeId) {
+      setBold(toolBarState.bold);
+    }
   }, [toolBarState.bold]);
   useEffect(() => {
     CurrentTextNodeID === data.nodeId ? setItalic(toolBarState.italic) : void 0;
@@ -28,29 +37,20 @@ function TextUpdaterNode({ data }) {
       ? setUnderline(toolBarState.underline)
       : void 0;
   }, [toolBarState.underline]);
+  
   useEffect(() => {
-    setInputString((prev) => {
-      if(currentKeyPressed !== undefined && CurrentTextNodeID === data.nodeId){
-        console.log("hahaah")
-        if(currentKeyPressed.toLowerCase() === "backspace"){
-          return prev.slice(0, -1)
-        }
-        if(currentKeyPressed.length === 1){
-          return prev + currentKeyPressed
-        }
-      }
-      return prev
-    })
-  }, [currentKeyPressed])
+    setWidth(span.current.offsetWidth);
+  }, [inputString, isBold, fontSize]);
+
   return (
     <div
-      style={{
-        width: isBold
-          ? inputString.length * (fontSize / 2) + 20
-          : inputString.length * (fontSize / 2) + 15,
-      }}
-      className="text-updater-node"
+      className="text-updater-node hover:cursor-text"
       onClick={() => {
+        inputField.current.focus();
+        dispatch({
+          type: "SET_CURRENT_NODE_ID",
+          payload: data.nodeId,
+        })
         dispatch({ type: "SET_FONT", payload: fontSize });
         dispatch({ type: "SET_BOLD", payload: isBold });
         dispatch({ type: "SET_ITALIC", payload: isItalic });
@@ -59,24 +59,33 @@ function TextUpdaterNode({ data }) {
     >
       <div
         className=" text-center flex flex-col font-base min-w-[1rem] min-h-[0.7rem]"
-        id={`textUpdater|${data.nodeId}`}
         style={{
           fontSize: fontSize,
           fontWeight: isBold ? "bold" : "normal",
+          fontStyle: isItalic ? "oblique" : "normal",
+          textDecoration: isUnderline ? "underline" : "none",
           boxSizing: "border-box",
-          backgroundColor: CurrentTextNodeID == data.nodeId ? "white" : "transparent",
           border: CurrentTextNodeID == data.nodeId ? "black solid 1px" : "transparent solid 1px"
         }}
       >
-        <h2
-          id={`textUpdater|${data.nodeId}`}
-          style={{
-            fontStyle: isItalic ? "oblique" : "normal",
-            textDecoration: isUnderline ? "underline" : "none",
-          }}
+        <span 
+          className="absolute -z-100 opacity-0 whitespace-pre" 
+          ref={span}
+          id="text-updater"  
         >
-          {inputString}
-        </h2>
+           {inputString} 
+        </span>
+        <input
+          ref={inputField}
+          style ={{
+            width , 
+            backgroundColor: CurrentTextNodeID == data.nodeId ? "white" : "transparent"
+          }} 
+          className="min-w-1 p-0 focus:outline-none" 
+          type="text" 
+          value={inputString}
+          onChange={changeHandler} 
+        />
       </div>
     </div>
   );
