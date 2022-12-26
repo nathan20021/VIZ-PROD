@@ -6,13 +6,63 @@ import domtoimage from "dom-to-image";
 import { saveAs } from "file-saver";
 
 const TopBar = () => {
+
+  const exportToPNG = () => {
+    var node = document.getElementById("react-flow-provider");
+    domtoimage
+      .toPng(node)
+      .then(function (dataUrl) {
+        var img = new Image();
+        img.src = dataUrl;
+        console.log(dataUrl);
+        saveAs(dataUrl, `${headerTitle}.jpeg`);
+      })
+      .catch(function (error) {
+        console.error("oops, something went wrong!", error);
+      });
+  }
+
+  const downloadFile = ({ data, fileName, fileType }) => {
+    // Create a blob with the data we want to download as a file
+    const blob = new Blob([data], { type: fileType })
+    // Create an anchor element and dispatch a click event on it
+    // to trigger a download
+    const a = document.createElement('a')
+    a.download = fileName
+    a.href = window.URL.createObjectURL(blob)
+    const clickEvt = new MouseEvent('click', {
+      view: window,
+      bubbles: true,
+      cancelable: true,
+    })
+    a.dispatchEvent(clickEvt)
+    a.remove()
+  }
+
+  const exportToVIZ = (nodes, edges, title) => {
+    // const data = {
+    //   nodes: nodes,
+    //   edges: edges
+    // }
+    // downloadFile({
+    //   data: JSON.stringify(nodes),
+    //   fileName: `${title}.viz`,
+    //   fileType: 'text/json',
+    // })
+    console.log(nodes)
+  }
+
+
   const dispatch = useDispatch();
   const headerTitle = useSelector((state) => state.headerTitle);
   const [width, setWidth] = useState(0);
   const span = useRef();
+  const nodes = {}
+  const edges = {}
 
   useEffect(() => {
     setWidth(span.current.offsetWidth + 50);
+    console.log("render")
   }, [headerTitle]);
 
   return (
@@ -110,31 +160,27 @@ const TopBar = () => {
       </div>
       <div
         id="right-side"
-        className="h-full flex justify-end items-center gap-4 mr-5"
+        className="h-full flex justify-end items-center gap-4 mr-5 z-[1000]"
       >
-        <button
-          className="bg-[#333333] hover:bg-[#555555] text-white font-bold text-sm px-4 py-2 flex justify-center items-center gap-2 rounded-sm shadow-md"
-          onClick={() => {
-            var node = document.getElementById("hahaha");
-            //   reactFlowInstance.fitView();
-            domtoimage
-              .toPng(node)
-              .then(function (dataUrl) {
-                var img = new Image();
-                img.src = dataUrl;
-                console.log(dataUrl);
-                saveAs(dataUrl, `${headerTitle}.jpeg`);
-              })
-              .catch(function (error) {
-                console.error("oops, something went wrong!", error);
-              });
-          }}
-        >
-          <div className="text-xl font-extrabold">
-            <BiCloudDownload />
-          </div>
-          Export
-        </button>
+        <Menu className="">
+          {({ isOpen }) => (
+            <>
+              <MenuButton>
+                <div
+                  className="bg-[#333333] hover:bg-[#555555] text-white font-bold text-sm px-4 py-2 flex justify-center items-center gap-2 rounded-sm shadow-md"
+                >
+                  Export
+                  <BiCloudDownload />
+
+                </div>
+              </MenuButton>
+              <MenuList>
+                <MenuItem onClick={exportToPNG}>Export to .PNG</MenuItem>
+                <MenuItem onClick={() => exportToVIZ(nodes, edges, headerTitle)}>Export to .VIZ</MenuItem>
+              </MenuList>
+            </>
+          )}
+        </Menu>
         <Avatar className="shadow-md" size="sm" bg="orange.600" />
       </div>
     </div>

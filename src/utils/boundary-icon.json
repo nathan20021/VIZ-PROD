@@ -29,7 +29,7 @@
     "cornerIcon": false,
     "bodySelectable": false
   },
-  "Aws-Cluster": {
+  "AWS-Cluster": {
     "color": "#333333",
     "bgColor": "#eeeeee38",
     "url": "aws-logo.jpeg",

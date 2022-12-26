@@ -1,4 +1,4 @@
-const HeaderReducer = (state = "My AWS Diagram", action) => {
+const HeaderReducer = (state = "untitled", action) => {
   switch (action.type) {
     case "SET_Header":
       if (action.payload.length < 32) return action.payload;
