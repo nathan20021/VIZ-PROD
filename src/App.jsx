@@ -468,7 +468,7 @@ const App = () => {
                   connectionMode="loose"
                   fitView
                 >
-                  <Background color="#aaa" size={0.7} gap={15} />
+                  <Background className="bg-[#fafafa]" color="#999" size={0.7} gap={15} />
                   <Controls />
                 </ReactFlow>
               </div>

@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { rgbaToHex, rgbaToRgbaCSS } from "../utils/functions";
 
 function TextUpdaterNode({ data }) {
   const [inputString, setInputString] = useState(data.value);
@@ -11,11 +12,23 @@ function TextUpdaterNode({ data }) {
   const [isBold, setBold] = useState(false);
   const [isItalic, setItalic] = useState(false);
   const [isUnderline, setUnderline] = useState(false);
+  const [bgColor, setBgColor] = useState({
+    r: 255,
+    g: 255,
+    b: 255,
+    a: 0
+  });
+  const [fontColor, setFontColor] = useState({
+    r: 0,
+    g: 0,
+    b: 0,
+    a: 1
+  });
   const toolBarState = useSelector((state) => state.toolBarState);
   const CurrentTextNodeID = useSelector((state) => state.currentTextNodeId);
   const dispatch = useDispatch();
 
-  const changeHandler = evt => {
+  const onChangeTextInput = evt => {
     setInputString(evt.target.value);
   };
 
@@ -24,19 +37,34 @@ function TextUpdaterNode({ data }) {
       ? setFontSize(toolBarState.fontSize)
       : void 0;
   }, [toolBarState.fontSize]);
+
   useEffect(() => {
     if (CurrentTextNodeID === data.nodeId) {
       setBold(toolBarState.bold);
     }
   }, [toolBarState.bold]);
+
   useEffect(() => {
     CurrentTextNodeID === data.nodeId ? setItalic(toolBarState.italic) : void 0;
   }, [toolBarState.italic]);
+
   useEffect(() => {
     CurrentTextNodeID === data.nodeId
       ? setUnderline(toolBarState.underline)
       : void 0;
   }, [toolBarState.underline]);
+  
+  useEffect(() => {
+    CurrentTextNodeID === data.nodeId
+      ? setBgColor(toolBarState.bgColor)
+      : void 0;
+  }, [toolBarState.bgColor]);
+  
+  useEffect(() => {
+    CurrentTextNodeID === data.nodeId
+      ? setFontColor(toolBarState.fontColor)
+      : void 0;
+  }, [toolBarState.fontColor]);
   
   useEffect(() => {
     setWidth(span.current.offsetWidth);
@@ -46,6 +74,7 @@ function TextUpdaterNode({ data }) {
     <div
       className="text-updater-node hover:cursor-text"
       onClick={() => {
+        console.log(bgColor)
         inputField.current.focus();
         dispatch({
           type: "SET_CURRENT_NODE_ID",
@@ -55,17 +84,22 @@ function TextUpdaterNode({ data }) {
         dispatch({ type: "SET_BOLD", payload: isBold });
         dispatch({ type: "SET_ITALIC", payload: isItalic });
         dispatch({ type: "SET_UNDERLINE", payload: isUnderline });
+        dispatch({ type: "SET_BG_COLOR", payload: bgColor });
+        dispatch({ type: "SET_FONT_COLOR", payload: fontColor });
+        
       }}
     >
       <div
-        className=" text-center flex flex-col font-base min-w-[1rem] min-h-[0.7rem]"
+        className="px-2 text-center flex flex-col font-base min-w-[1rem] min-h-[0.7rem]"
         style={{
           fontSize: fontSize,
           fontWeight: isBold ? "bold" : "normal",
           fontStyle: isItalic ? "oblique" : "normal",
           textDecoration: isUnderline ? "underline" : "none",
           boxSizing: "border-box",
-          border: CurrentTextNodeID == data.nodeId ? "black solid 1px" : "transparent solid 1px"
+          border: CurrentTextNodeID == data.nodeId ? "black solid 1px" : "transparent solid 1px",
+          backgroundColor: rgbaToRgbaCSS(bgColor),
+          color: rgbaToRgbaCSS(fontColor)
         }}
       >
         <span 
@@ -79,12 +113,12 @@ function TextUpdaterNode({ data }) {
           ref={inputField}
           style ={{
             width , 
-            backgroundColor: CurrentTextNodeID == data.nodeId ? "white" : "transparent"
+            backgroundColor: "transparent"
           }} 
           className="min-w-1 p-0 focus:outline-none" 
           type="text" 
           value={inputString}
-          onChange={changeHandler} 
+          onChange={onChangeTextInput} 
         />
       </div>
     </div>

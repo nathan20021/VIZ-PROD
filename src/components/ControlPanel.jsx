@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { IoText } from "react-icons/io5";
-import ColorPicker from "./ColorPicker";
 import { useSelector, useDispatch } from "react-redux";
 import { FaBold } from "react-icons/fa";
 import { FiUnderline, FiItalic } from "react-icons/fi";
-import { AiOutlineLock, AiFillDelete } from "react-icons/ai";
+import { AiFillDelete } from "react-icons/ai";
 import { IoMdUndo, IoMdRedo } from "react-icons/io";
 import { BiMinus, BiPlus } from "react-icons/bi";
 import {
@@ -16,19 +15,63 @@ import {
   MdAlignVerticalTop,
 } from "react-icons/md";
 
+import { rgbaToHex } from "../utils/functions";
+
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverArrow,
+} from '@chakra-ui/react'
+
+import { SketchPicker } from 'react-color';
+
 const ControlPanel = () => {
   const dispatch = useDispatch();
   const toolBarState = useSelector((state) => state.toolBarState);
   const currentTextNodeId = useSelector((state) => state.currentTextNodeId);
   const commonStyle =
-    "button-container flex justify-center items-center gap-3 text-xs p-2 border-l-2";
-  useEffect(() => {
+    "button-container flex justify-center items-center gap-3 text-xs px-2 border-l-2";
+  
+  const handleChangeFontColorComplete = (color) => {
+    setFontColor(color.rgb);
+    dispatch({ type: "SET_FONT_COLOR", payload: color.rgb });
+
+  };
+  const handleChangeFontColor = (color) => {
+    setFontColor(color.rgb);
+  };
+
+  const handleChangeBgColorComplete = (color) => {
+    setBgColor(color.rgb);
+    dispatch({ type: "SET_BG_COLOR", payload: color.rgb });
+  };
+  const handleChangeBgColor = (color) => {
+    setBgColor(color.rgb);
+  };
+  
+  const [fontColor, setFontColor] = useState({
+    r: 0,
+    g: 0,
+    b: 0,
+    a: 1,
+  })
+  
+  const [bgColor, setBgColor] = useState({
+    r: 255,
+    g: 255,
+    b: 255,
+    a: 1,
+  })
+
+    useEffect(() => {
     if (currentTextNodeId === null) {
       dispatch({ type: "SET_BOLD", payload: false });
       dispatch({ type: "SET_ITALIC", payload: false });
       dispatch({ type: "SET_UNDERLINE", payload: false });
     }
   }, [currentTextNodeId]);
+
   return (
     <div className=" w-full h-full flex justify-start border-y-2 border-[#eeeeee]">
       <div id="undo-redo-section" className={`${commonStyle} text-base`}>
@@ -122,19 +165,50 @@ const ControlPanel = () => {
         >
           <AiFillDelete />
         </button>
-        {/* <div
-          className={currentTextNodeId === null ? `` : `hover:bg-[#aaaaaa]`}
-          style={{
-            padding: "0.4rem",
-            color: currentTextNodeId === null ? `#aaaaaa` : ``,
-          }}
-          onClick={() => {
-            dispatch({ type: "DELETE_NODE" });
-          }}
-          disabled={currentTextNodeId === null}
-        >
-          <ColorPicker />
-        </div> */}
+        <div className="z-[100] h-full flex justify-center items-center" id="bg-color-changer">
+          <Popover>
+            <PopoverTrigger >
+              <button 
+                disabled={currentTextNodeId === null}
+                className="aspect-square h-[65%] rounded-sm border-[2px] border-black box-border"
+                style={{backgroundColor: rgbaToHex(fontColor)}}
+              />
+            </PopoverTrigger>
+            <PopoverContent className="max-w-min">
+              <PopoverArrow />
+              <SketchPicker
+                className="min-w-[250px]"
+                disableAlpha={false}
+                color={fontColor}
+                onChange= {handleChangeFontColor}
+                onChangeComplete= {handleChangeFontColorComplete}
+              />
+            </PopoverContent>
+
+          </Popover>
+        </div>
+        <div className="z-[100] h-full flex justify-center items-center" id="bg-color-changer">
+          <Popover>
+            <PopoverTrigger >
+              <button 
+                disabled={currentTextNodeId === null}
+                className="aspect-square h-[65%] rounded-sm border-[2px] border-black box-border"
+                style={{backgroundColor: rgbaToHex(bgColor)}}
+              />
+            </PopoverTrigger>
+            <PopoverContent className="max-w-min">
+              <PopoverArrow />
+              <SketchPicker
+                className="min-w-[250px]"
+                disableAlpha={false}
+                color={bgColor}
+                onChange= {handleChangeBgColor}
+                onChangeComplete= {handleChangeBgColorComplete}
+              />
+            </PopoverContent>
+
+          </Popover>
+        </div>
       </div>
       <div id="textTool-section" className={commonStyle}>
         <button
