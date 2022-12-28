@@ -1,5 +1,7 @@
 # VIZ - AWS Diagramming Made Easy 
 
+A front-end application to visualize AWS infustructures.
+
 ## Live production example:
 <img width="1792" alt="image" src="https://user-images.githubusercontent.com/47722603/209884359-46999e5d-eacd-4c35-8a40-a8451a782301.png">
 
