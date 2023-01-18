@@ -1,11 +1,10 @@
 # TODO
 
 1. Node Creation
-   1. When drag and drop the node got replace
-   2. Boundary Node is undraggable
+   1. Boundary Node is undraggable
 2. Quality of life
    1. Control + N to create new page
-   2. Export to .viz should take info from react store
+   2. Import from .viz files
 3. Edge Creation
    1. Edge have the ability to change the label
 4. Better Typing Experience

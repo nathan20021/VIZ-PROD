@@ -236,6 +236,7 @@ const App = () => {
 
   return (
     <main className="overflow-hidden h-screen">
+            <ReactFlowProvider>
 
         <div className="h-[10%] w-full">
           <div className="h-2/3  w-full">
@@ -413,7 +414,6 @@ const App = () => {
                 </p>
               </div>
             </div>
-            <ReactFlowProvider>
 
               <div
                 id="react-flow-provider"
@@ -472,9 +472,9 @@ const App = () => {
                   <Controls />
                 </ReactFlow>
               </div>
-            </ReactFlowProvider>
           </div>
         </div>
+      </ReactFlowProvider>
     </main>
   );
 };

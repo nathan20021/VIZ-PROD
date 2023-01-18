@@ -4,8 +4,10 @@ import { BiCloudDownload } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import domtoimage from "dom-to-image";
 import { saveAs } from "file-saver";
+import { useStoreApi } from 'reactflow';
 
 const TopBar = () => {
+  const store = useStoreApi();
 
   const exportToJPG = () => {
     var node = document.getElementById("react-flow-provider");
@@ -39,17 +41,18 @@ const TopBar = () => {
     a.remove()
   }
 
-  const exportToVIZ = (nodes, edges, title) => {
-    // const data = {
-    //   nodes: nodes,
-    //   edges: edges
-    // }
-    // downloadFile({
-    //   data: JSON.stringify(nodes),
-    //   fileName: `${title}.viz`,
-    //   fileType: 'text/json',
-    // })
-    console.log(nodes)
+  const exportToVIZ = (title) => {
+    const { edges, nodeInternals } = store.getState();
+    const nodes = Array.from(nodeInternals).map(([, node]) => node);
+    const data = {
+      nodes: nodes,
+      edges: edges
+    }
+    downloadFile({
+      data: JSON.stringify(data),
+      fileName: `${title}.viz`,
+      fileType: 'text/json',
+    })
   }
 
 
@@ -176,7 +179,7 @@ const TopBar = () => {
               </MenuButton>
               <MenuList>
                 <MenuItem onClick={exportToJPG}>Export to .JPG</MenuItem>
-                <MenuItem onClick={() => exportToVIZ(nodes, edges, headerTitle)}>Export to .VIZ</MenuItem>
+                <MenuItem onClick={() => exportToVIZ(headerTitle)}>Export to .VIZ</MenuItem>
               </MenuList>
             </>
           )}
