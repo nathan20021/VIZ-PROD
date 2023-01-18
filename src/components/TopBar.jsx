@@ -7,7 +7,7 @@ import { saveAs } from "file-saver";
 
 const TopBar = () => {
 
-  const exportToPNG = () => {
+  const exportToJPG = () => {
     var node = document.getElementById("react-flow-provider");
     domtoimage
       .toPng(node)
@@ -175,7 +175,7 @@ const TopBar = () => {
                 </div>
               </MenuButton>
               <MenuList>
-                <MenuItem onClick={exportToPNG}>Export to .PNG</MenuItem>
+                <MenuItem onClick={exportToJPG}>Export to .JPG</MenuItem>
                 <MenuItem onClick={() => exportToVIZ(nodes, edges, headerTitle)}>Export to .VIZ</MenuItem>
               </MenuList>
             </>
