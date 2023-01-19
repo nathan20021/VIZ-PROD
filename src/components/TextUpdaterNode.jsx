@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { rgbaToHex, rgbaToRgbaCSS } from "../utils/functions";
+import { rgbaToRgbaCSS } from "../utils/functions";
 
 function TextUpdaterNode({ data }) {
   const [inputString, setInputString] = useState(data.value);
@@ -12,18 +12,8 @@ function TextUpdaterNode({ data }) {
   const [isBold, setBold] = useState(false);
   const [isItalic, setItalic] = useState(false);
   const [isUnderline, setUnderline] = useState(false);
-  const [bgColor, setBgColor] = useState({
-    r: 255,
-    g: 255,
-    b: 255,
-    a: 0
-  });
-  const [fontColor, setFontColor] = useState({
-    r: 0,
-    g: 0,
-    b: 0,
-    a: 1
-  });
+  const [bgColor, setBgColor] = useState(data.bgColor);
+  const [fontColor, setFontColor] = useState(data.fontColor);
   const toolBarState = useSelector((state) => state.toolBarState);
   const CurrentTextNodeID = useSelector((state) => state.currentTextNodeId);
   const dispatch = useDispatch();
@@ -74,12 +64,12 @@ function TextUpdaterNode({ data }) {
     <div
       className="text-updater-node hover:cursor-text"
       onClick={() => {
-        console.log(bgColor)
         inputField.current.focus();
         dispatch({
           type: "SET_CURRENT_NODE_ID",
           payload: data.nodeId,
         })
+        // TODO: Combine all these dispatch into one single statement
         dispatch({ type: "SET_FONT", payload: fontSize });
         dispatch({ type: "SET_BOLD", payload: isBold });
         dispatch({ type: "SET_ITALIC", payload: isItalic });

@@ -20,7 +20,7 @@ import ReactFlow, {
 import "reactflow/dist/style.css";
 import { useSelector, useDispatch } from "react-redux";
 
-import defaultFlow from "./utils/initials.json"
+import defaultFlow from "./utils/out.json"
 
 import ServiceComponent from "./components/ServiceComponent";
 import BoundaryComponent from "./components/AwsBoundaryComponent";
@@ -150,6 +150,18 @@ const App = () => {
             data: {
               value: toImageNameFromURL(currentURL),
               nodeId: `node-${nodes.length + 2}`,
+              bgColor: {
+                r:255,
+                g:255,
+                b:255,
+                a:0
+              },
+              fontColor: {
+                r:0,
+                g:0,
+                b:0,
+                a:1
+              }
             },
           },
         ])
@@ -323,6 +335,18 @@ const App = () => {
                       data: {
                         value: "TEXT",
                         nodeId: `node-${nodes.length + 1}`,
+                        bgColor: {
+                          r:255,
+                          g:255,
+                          b:255,
+                          a:0
+                        },
+                        fontColor: {
+                          r:0,
+                          g:0,
+                          b:0,
+                          a:1
+                        }
                       },
                     },
                   ])

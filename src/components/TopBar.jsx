@@ -4,10 +4,11 @@ import { BiCloudDownload } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import domtoimage from "dom-to-image";
 import { saveAs } from "file-saver";
-import { useStoreApi } from 'reactflow';
+import { useStoreApi, useReactFlow } from 'reactflow';
 
 const TopBar = () => {
   const store = useStoreApi();
+  const {setEdges, setNodes} = useReactFlow();
 
   const exportToJPG = () => {
     var node = document.getElementById("react-flow-provider");
@@ -17,7 +18,7 @@ const TopBar = () => {
         var img = new Image();
         img.src = dataUrl;
         console.log(dataUrl);
-        saveAs(dataUrl, `${headerTitle}.jpeg`);
+        saveAs(dataUrl, `${headerTitle.replace(" ", "-")}.jpeg`);
       })
       .catch(function (error) {
         console.error("oops, something went wrong!", error);
@@ -30,7 +31,7 @@ const TopBar = () => {
     // Create an anchor element and dispatch a click event on it
     // to trigger a download
     const a = document.createElement('a')
-    a.download = fileName
+    a.download = fileName.replace(" ", "-")
     a.href = window.URL.createObjectURL(blob)
     const clickEvt = new MouseEvent('click', {
       view: window,
@@ -42,9 +43,11 @@ const TopBar = () => {
   }
 
   const exportToVIZ = (title) => {
+    
     const { edges, nodeInternals } = store.getState();
     const nodes = Array.from(nodeInternals).map(([, node]) => node);
     const data = {
+      title: title,
       nodes: nodes,
       edges: edges
     }
@@ -55,14 +58,25 @@ const TopBar = () => {
     })
   }
 
+  const importViz = (file) => {
+    const reader = new FileReader();
+    reader.readAsText(file);
+    reader.onloadend = () => {
+      const vizJSON = JSON.parse(reader.result)
+      console.log(vizJSON)
+      setNodes(vizJSON.nodes)
+      setEdges(vizJSON.edges)
+      dispatch({ type: "SET_Header", payload: vizJSON.title });
+    }
+
+  }
+
 
   const dispatch = useDispatch();
   const headerTitle = useSelector((state) => state.headerTitle);
   const [width, setWidth] = useState(0);
-  const span = useRef();
-  const nodes = {}
-  const edges = {}
-
+  const span = useRef(null);
+  const inputFile = useRef(null) 
   useEffect(() => {
     setWidth(span.current.offsetWidth + 50);
     console.log("render")
@@ -131,7 +145,17 @@ const TopBar = () => {
               <Menu className="text-sm">
                 <MenuButton className="text-sm">Insert</MenuButton>
                 <MenuList className="flex flex-col text-sm">
-                  <MenuItem>Viz diagram</MenuItem>
+                  <MenuItem onClick={() => inputFile.current.click()}>
+                    <input 
+                      type='file' 
+                      id='file'
+                      accept=".viz" 
+                      ref={inputFile} 
+                      onChange = {(e) => importViz(e.target.files[0])}
+                      style={{display: 'none'}}
+                      />
+                    Viz diagram
+                    </MenuItem>
                   <MenuItem>Image</MenuItem>
                   <MenuItem>Video</MenuItem>
                   <MenuItem>Youtube</MenuItem>
