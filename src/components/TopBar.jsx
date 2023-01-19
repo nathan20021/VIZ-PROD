@@ -8,6 +8,7 @@ import { useStoreApi, useReactFlow } from 'reactflow';
 
 const TopBar = () => {
   const store = useStoreApi();
+  
   const {setEdges, setNodes} = useReactFlow();
 
   const exportToJPG = () => {
@@ -52,7 +53,7 @@ const TopBar = () => {
       edges: edges
     }
     downloadFile({
-      data: JSON.stringify(data),
+      data: JSON.stringify(data, null, 2),
       fileName: `${title}.viz`,
       fileType: 'text/json',
     })

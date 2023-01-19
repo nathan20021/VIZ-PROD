@@ -14,9 +14,6 @@ import {
   MdAlignVerticalCenter,
   MdAlignVerticalTop,
 } from "react-icons/md";
-
-import { rgbaToHex } from "../utils/functions";
-
 import {
   Popover,
   PopoverTrigger,
@@ -24,9 +21,12 @@ import {
   PopoverArrow,
 } from '@chakra-ui/react'
 
+import { rgbaToHex } from "../utils/functions";
 import { SketchPicker } from 'react-color';
+import { useReactFlow } from 'reactflow';
 
 const ControlPanel = () => {
+  const {setNodes} = useReactFlow();
   const dispatch = useDispatch();
   const toolBarState = useSelector((state) => state.toolBarState);
   const currentTextNodeId = useSelector((state) => state.currentTextNodeId);
@@ -36,8 +36,16 @@ const ControlPanel = () => {
   const handleChangeFontColorComplete = (color) => {
     setFontColor(color.rgb);
     dispatch({ type: "SET_FONT_COLOR", payload: color.rgb });
-
+    setNodes((nds) =>
+      nds.map((node) => {
+        if (node.id === currentTextNodeId) {
+          node.data.fontColor = color.rgb;
+        }
+        return node;
+      })
+    );
   };
+
   const handleChangeFontColor = (color) => {
     setFontColor(color.rgb);
   };
@@ -45,6 +53,14 @@ const ControlPanel = () => {
   const handleChangeBgColorComplete = (color) => {
     setBgColor(color.rgb);
     dispatch({ type: "SET_BG_COLOR", payload: color.rgb });
+    setNodes((nds) =>
+      nds.map((node) => {
+        if (node.id === currentTextNodeId) {
+          node.data.bgColor = color.rgb;
+        }
+        return node;
+      })
+    );
   };
   const handleChangeBgColor = (color) => {
     setBgColor(color.rgb);

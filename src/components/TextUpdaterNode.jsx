@@ -1,8 +1,12 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { rgbaToRgbaCSS } from "../utils/functions";
+import { useReactFlow } from 'reactflow';
 
 function TextUpdaterNode({ data }) {
+
+  const {setNodes} = useReactFlow();
+
   const [inputString, setInputString] = useState(data.value);
   const [width, setWidth] = useState(0);
   const span = useRef();
@@ -20,6 +24,14 @@ function TextUpdaterNode({ data }) {
 
   const onChangeTextInput = evt => {
     setInputString(evt.target.value);
+    setNodes((nds) =>
+      nds.map((node) => {
+        if (node.id === data.nodeId) {
+          node.data.value = evt.target.value;
+        }
+        return node;
+      })
+    );
   };
 
   useEffect(() => {
