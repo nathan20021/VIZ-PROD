@@ -12,8 +12,8 @@ import ReactFlow, {
   Background,
   Controls,
   MarkerType,
-  useNodesState,
-  useEdgesState,
+  applyEdgeChanges, 
+  applyNodeChanges
 } from "reactflow";
 import "reactflow/dist/style.css";
 import { useSelector, useDispatch } from "react-redux";
@@ -60,10 +60,6 @@ const toImageNameFromURL = (url) => {
 };
 const listOfBoundaries = Object.keys(boundaryJson);
 
-const initialEdges = defaultFlow.edges
-
-const initialNodes = defaultFlow.nodes
-
 const App = () => {
   const dispatch = useDispatch();
   const reactFlowWrapper = useRef(null);
@@ -78,8 +74,8 @@ const App = () => {
   const [dragging, setDragging] = useState(false);
   const [resizing, setResizing] = useState(true);
   const [currentURL, setCurrentURL] = useState("None");
-  const [nodes, setNodes, onNodesChange] = useNodesState([]);
-  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  const [nodes, setNodes] = useState([]);
+  const [edges, setEdges] = useState([]);
   const [hoverImageURL, setHoverImageURL] = useState(
     "aws-asset/Compute/Amazon-EC2.png"
   );
@@ -87,6 +83,15 @@ const App = () => {
   const [hoverAreaActivate, setHoverAreaActivate] = useState(false);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
   const [currentBoundaryData, setCurrentBoundaryData] = useState({});
+
+  const onNodesChange = useCallback( (changes) => {
+    setNodes((nds) => applyNodeChanges(changes, nds))
+    // TODO: sync the state of the redux store with the node changes
+  },[] );
+  const onEdgesChange = useCallback( (changes) => {
+    setEdges((eds) => applyEdgeChanges(changes, eds))
+    // TODO: sync the state of the redux store with edge changes
+  },[] );
 
   const deleteNodeById = (id) => {
     setNodes((nodes) => nodes.filter((node) => node.id !== id));
@@ -228,7 +233,6 @@ const App = () => {
         setNodes(diagram.nodes)
         setEdges(diagram.edges)
         dispatch({ type: "SET_Header", payload: diagram.title });
-        console.log("RUN")
       })
       : void 0
     window.onbeforeunload = function (e) {
