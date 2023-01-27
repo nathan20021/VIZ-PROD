@@ -4,15 +4,20 @@ import { BiCloudDownload } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 import domtoimage from "dom-to-image";
 import { saveAs } from "file-saver";
-import { useStoreApi, useReactFlow } from 'reactflow';
+import { useReactFlow } from 'reactflow';
 
 const TopBar = () => {
-  const store = useStoreApi();
   
-  const {setEdges, setNodes} = useReactFlow();
+  const dispatch = useDispatch();
+  const headerTitle = useSelector((state) => state.headerTitle);
+  const data = useSelector((state) => state.fileSelectorState.fileInfoArrays)
+
+  
+  const {setEdges, setNodes, fitView} = useReactFlow();
 
   const exportToJPG = () => {
     var node = document.getElementById("react-flow-provider");
+    fitView();
     domtoimage
       .toPng(node)
       .then(function (dataUrl) {
@@ -44,14 +49,6 @@ const TopBar = () => {
   }
 
   const exportToVIZ = (title) => {
-    
-    const { edges, nodeInternals } = store.getState();
-    const nodes = Array.from(nodeInternals).map(([, node]) => node);
-    const data = {
-      title: title,
-      nodes: nodes,
-      edges: edges
-    }
     downloadFile({
       data: JSON.stringify(data, null, 2),
       fileName: `${title}.viz`,
@@ -64,7 +61,6 @@ const TopBar = () => {
     reader.readAsText(file);
     reader.onloadend = () => {
       const vizJSON = JSON.parse(reader.result)
-      console.log(vizJSON)
       setNodes(vizJSON.nodes)
       setEdges(vizJSON.edges)
       dispatch({ type: "SET_Header", payload: vizJSON.title });
@@ -73,8 +69,6 @@ const TopBar = () => {
   }
 
 
-  const dispatch = useDispatch();
-  const headerTitle = useSelector((state) => state.headerTitle);
   const [width, setWidth] = useState(0);
   const span = useRef(null);
   const inputFile = useRef(null) 

@@ -4,9 +4,10 @@
    1. Boundary Node is undraggable
 2. Quality of life
    1. Control + N to create new page
-   2. Import from .viz files
+   2. Contrl + S to save to user's local file system
+   3. Undo and Redo Functionality
 3. Edge Creation
    1. Edge have the ability to change the label
 4. Better Typing Experience
-   1. Able to click to choose cursor position, arrow key to move cursor
+   1. Able to click to choose cursor position
 5. Search for services using their accronym (DMS, S3)

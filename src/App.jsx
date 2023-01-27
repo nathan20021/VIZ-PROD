@@ -9,8 +9,6 @@ import SideBar from "./components/SideBar";
 import ReactFlow, {
   ReactFlowProvider,
   addEdge,
-  applyEdgeChanges,
-  applyNodeChanges,
   Background,
   Controls,
   MarkerType,
@@ -20,7 +18,7 @@ import ReactFlow, {
 import "reactflow/dist/style.css";
 import { useSelector, useDispatch } from "react-redux";
 
-import defaultFlow from "./utils/out.json"
+import defaultFlow from "./utils/Test.viz"
 
 import ServiceComponent from "./components/ServiceComponent";
 import BoundaryComponent from "./components/AwsBoundaryComponent";
@@ -30,6 +28,7 @@ import boundaryJson from "./utils/boundary-icon.json";
 import ControlPanel from "./components/ControlPanel";
 import TopBar from "./components/TopBar";
 import useHotkeys from "@reecelucas/react-use-hotkeys";
+import FileSelector from "./components/FileSelector";
 
 const removeDashes = (str) => {
   const replaceAt = function (index, replacement, string) {
@@ -61,9 +60,9 @@ const toImageNameFromURL = (url) => {
 };
 const listOfBoundaries = Object.keys(boundaryJson);
 
-const initialEdges = defaultFlow.defaultEdges
+const initialEdges = defaultFlow.edges
 
-const initialNodes = defaultFlow.defaultNodes
+const initialNodes = defaultFlow.nodes
 
 const App = () => {
   const dispatch = useDispatch();
@@ -74,11 +73,13 @@ const App = () => {
   const headerTitle = useSelector((state) => state.headerTitle);
   const currentTextNodeId = useSelector((state) => state.currentTextNodeId);
   const deleteRequest = useSelector((state) => state.deleteNodeRequest);
+  const currentFileID = useSelector((state) => state.fileSelectorState.index)
+  const fileInfoArrays = useSelector((state) => state.fileSelectorState.fileInfoArrays)
   const [dragging, setDragging] = useState(false);
   const [resizing, setResizing] = useState(true);
   const [currentURL, setCurrentURL] = useState("None");
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [nodes, setNodes, onNodesChange] = useNodesState([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [hoverImageURL, setHoverImageURL] = useState(
     "aws-asset/Compute/Amazon-EC2.png"
   );
@@ -86,9 +87,11 @@ const App = () => {
   const [hoverAreaActivate, setHoverAreaActivate] = useState(false);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
   const [currentBoundaryData, setCurrentBoundaryData] = useState({});
+
   const deleteNodeById = (id) => {
     setNodes((nodes) => nodes.filter((node) => node.id !== id));
   };
+
   const nodeTypes = useMemo(
     () => ({
       serviceComponent: ServiceComponent,
@@ -214,10 +217,33 @@ const App = () => {
   }
   
   useEffect(() => {
+    nodes.length === 0 ?
+    fetch(defaultFlow)
+      .then(r => r.text())
+      .then(text => {
+        const viz = JSON.parse(text)
+        dispatch({ type: "SET_FILE_INFO_ARRAYS", payload: viz });
+        dispatch({ type: "SET_CURRENT_FILE_ID", payload: 0 });
+        const diagram = viz[0]
+        setNodes(diagram.nodes)
+        setEdges(diagram.edges)
+        dispatch({ type: "SET_Header", payload: diagram.title });
+        console.log("RUN")
+      })
+      : void 0
     window.onbeforeunload = function (e) {
       return "Do you want to exit this page?";
     };
   }, []);
+
+  useEffect(()=> {
+    if (fileInfoArrays.length > 0){
+      setNodes(fileInfoArrays[currentFileID].nodes)
+      setEdges(fileInfoArrays[currentFileID].edges)
+      dispatch({ type: "SET_Header", payload: fileInfoArrays[currentFileID].title });
+    }
+
+  }, [currentFileID, fileInfoArrays])
 
   useEffect(() => {
     deleteRequest && currentTextNodeId !== null
@@ -248,8 +274,7 @@ const App = () => {
 
   return (
     <main className="overflow-hidden h-screen">
-            <ReactFlowProvider>
-
+      <ReactFlowProvider>
         <div className="h-[10%] w-full">
           <div className="h-2/3  w-full">
             <TopBar />
@@ -280,222 +305,223 @@ const App = () => {
           >
             <SideBar />
           </div>
+          <div id="file-editor-container" className="w-[85%] h-full">
+            <div id="file-selector" className="w-full h-[4%] flex">
+              <FileSelector/>
 
-          <div
-            id="EditorContainer"
-            style={{
-              cursor: textTool ? `text` : `default`,
-            }}
-            className={
-              sideBarState
-                ? `w-[85%] h-full relative bg-white z-50`
-                : `w-[100%] h-full relative bg-white z-50`
-            }
-            onMouseUp={(e) => {
-              if (Object.keys(currentBoundaryData).length !== 0) {
-                const reactFlowBounds =
-                  reactFlowWrapper.current.getBoundingClientRect();
-
-                const position = reactFlowInstance.project({
-                  x: e.clientX - reactFlowBounds.left - 20,
-                  y: e.clientY - reactFlowBounds.top - 20,
-                });
-                setNodes(
-                  nodes.concat([
-                    {
-                      id: `node-${nodes.length + 1}`,
-                      type: "boundaryNode",
-                      position: position,
-                      zIndex: -1,
-                      data: {
-                        ...currentBoundaryData,
-                        nodeId: `node-${nodes.length + 1}`,
-                      },
-                    },
-                  ])
-                );
-                setCurrentBoundaryData({});
-              }
-            }}
-            onClick={(e) => {
-              if (textTool) {
-                const reactFlowBounds =
-                  reactFlowWrapper.current.getBoundingClientRect();
-
-                const position = reactFlowInstance.project({
-                  x: e.clientX - reactFlowBounds.left - 20,
-                  y: e.clientY - reactFlowBounds.top - 20,
-                });
-                setNodes(
-                  nodes.concat([
-                    {
-                      id: `node-${nodes.length + 1}`,
-                      type: "textUpdater",
-                      position: position,
-                      data: {
-                        value: "TEXT",
-                        nodeId: `node-${nodes.length + 1}`,
-                        bgColor: {
-                          r:255,
-                          g:255,
-                          b:255,
-                          a:0
-                        },
-                        fontColor: {
-                          r:0,
-                          g:0,
-                          b:0,
-                          a:1
-                        }
-                      },
-                    },
-                  ])
-                );
-                dispatch({ type: "SWITCH_TEXT_TOOL" });
-              }
-              if (headerTool) {
-                const reactFlowBounds =
-                  reactFlowWrapper.current.getBoundingClientRect();
-
-                const position = reactFlowInstance.project({
-                  x: e.clientX - reactFlowBounds.left - 20,
-                  y: e.clientY - reactFlowBounds.top - 20,
-                });
-                setNodes(
-                  nodes.concat([
-                    {
-                      id: `node-${nodes.length + 1}`,
-                      type: "headerNode",
-                      position: position,
-                    },
-                  ])
-                );
-                setHeaderTool(false);
-              }
-            }}
-          >
-            {/* Hovering Box */}
+            </div>
             <div
-              ref={sideBox}
-              className={
-                !(!hoverAreaActivate || dragging)
-                  ? `
-                absolute bg-white w-[8rem] 
-                h-[9rem] z-40 border-[#333333] border-2 
-                flex flex-col justify-center items-center
-                ml-4 mt-4 gap-3 px-1 shadow-lg duration-200 ease-in
-                `
-                  : `
-                  opacity-0 absolute bg-white w-[8rem] 
-                  h-[9rem] border-[#333333] border-2 
-                  flex flex-col justify-center items-center
-                  ml-4 mt-4 gap-3 px-1 shadow-lg -z-50 duration-200 ease-in
-                  `
-              }
+              id="EditorContainer"
+              style={{
+                cursor: textTool ? `text` : `default`,
+              }}
+              className="w-full h-[96%] relative bg-white z-50"
+              onMouseUp={(e) => {
+                if (Object.keys(currentBoundaryData).length !== 0) {
+                  const reactFlowBounds =
+                    reactFlowWrapper.current.getBoundingClientRect();
+
+                  const position = reactFlowInstance.project({
+                    x: e.clientX - reactFlowBounds.left - 20,
+                    y: e.clientY - reactFlowBounds.top - 20,
+                  });
+                  setNodes(
+                    nodes.concat([
+                      {
+                        id: `node-${nodes.length + 1}`,
+                        type: "boundaryNode",
+                        position: position,
+                        zIndex: -1,
+                        data: {
+                          ...currentBoundaryData,
+                          nodeId: `node-${nodes.length + 1}`,
+                        },
+                      },
+                    ])
+                  );
+                  setCurrentBoundaryData({});
+                }
+              }}
+              onClick={(e) => {
+                if (textTool) {
+                  const reactFlowBounds =
+                    reactFlowWrapper.current.getBoundingClientRect();
+
+                  const position = reactFlowInstance.project({
+                    x: e.clientX - reactFlowBounds.left - 20,
+                    y: e.clientY - reactFlowBounds.top - 20,
+                  });
+                  setNodes(
+                    nodes.concat([
+                      {
+                        id: `node-${nodes.length + 1}`,
+                        type: "textUpdater",
+                        position: position,
+                        data: {
+                          value: "TEXT",
+                          nodeId: `node-${nodes.length + 1}`,
+                          bgColor: {
+                            r:255,
+                            g:255,
+                            b:255,
+                            a:0
+                          },
+                          fontColor: {
+                            r:0,
+                            g:0,
+                            b:0,
+                            a:1
+                          }
+                        },
+                      },
+                    ])
+                  );
+                  dispatch({ type: "SWITCH_TEXT_TOOL" });
+                }
+                if (headerTool) {
+                  const reactFlowBounds =
+                    reactFlowWrapper.current.getBoundingClientRect();
+
+                  const position = reactFlowInstance.project({
+                    x: e.clientX - reactFlowBounds.left - 20,
+                    y: e.clientY - reactFlowBounds.top - 20,
+                  });
+                  setNodes(
+                    nodes.concat([
+                      {
+                        id: `node-${nodes.length + 1}`,
+                        type: "headerNode",
+                        position: position,
+                      },
+                    ])
+                  );
+                  setHeaderTool(false);
+                }
+              }}
             >
-              <div className="w-full h-[50%] flex flex-col justify-end items-center">
-                {listOfBoundaries.includes(hoverImageURL) ? (
-                  <div key={hoverImageURL}>
-                    <div
-                      style={{
-                        borderColor: boundaryJson[hoverImageURL].color,
-                        background:
-                          boundaryJson[hoverImageURL].bgColor === "none"
-                            ? ``
-                            : `${boundaryJson[hoverImageURL].bgColor}`,
-                        borderStyle: boundaryJson[hoverImageURL].dashed
-                          ? `dashed`
-                          : `solid`,
-                      }}
-                      className={`w-12 h-12 relative border-[1px] box-content cursor-pointer`}
-                    >
+              {/* Hovering Box */}
+              <div
+                ref={sideBox}
+                className={
+                  !(!hoverAreaActivate || dragging)
+                    ? `
+                  absolute bg-white w-[8rem] 
+                  h-[9rem] z-40 border-[#333333] border-2 
+                  flex flex-col justify-center items-center
+                  ml-4 mt-4 gap-3 px-1 shadow-lg duration-200 ease-in
+                  `
+                    : `
+                    opacity-0 absolute bg-white w-[8rem] 
+                    h-[9rem] border-[#333333] border-2 
+                    flex flex-col justify-center items-center
+                    ml-4 mt-4 gap-3 px-1 shadow-lg -z-50 duration-200 ease-in
+                    `
+                }
+              >
+                <div className="w-full h-[50%] flex flex-col justify-end items-center">
+                  {listOfBoundaries.includes(hoverImageURL) ? (
+                    <div key={hoverImageURL}>
                       <div
                         style={{
                           borderColor: boundaryJson[hoverImageURL].color,
-                          backgroundImage:
-                            boundaryJson[hoverImageURL].url !== "none"
-                              ? `url(${boundaryJson[hoverImageURL].url})`
-                              : ``,
-                          backgroundSize: "contain",
+                          background:
+                            boundaryJson[hoverImageURL].bgColor === "none"
+                              ? ``
+                              : `${boundaryJson[hoverImageURL].bgColor}`,
+                          borderStyle: boundaryJson[hoverImageURL].dashed
+                            ? `dashed`
+                            : `solid`,
                         }}
-                        className="absolute w-5 h-5 border-[1px] -left-[1px] -top-[1px] box-borders"
-                      ></div>
+                        className={`w-12 h-12 relative border-[1px] box-content cursor-pointer`}
+                      >
+                        <div
+                          style={{
+                            borderColor: boundaryJson[hoverImageURL].color,
+                            backgroundImage:
+                              boundaryJson[hoverImageURL].url !== "none"
+                                ? `url(${boundaryJson[hoverImageURL].url})`
+                                : ``,
+                            backgroundSize: "contain",
+                          }}
+                          className="absolute w-5 h-5 border-[1px] -left-[1px] -top-[1px] box-borders"
+                        ></div>
+                      </div>
                     </div>
-                  </div>
-                ) : (
-                  <img
-                    src={hoverImageURL}
-                    alt={toImageNameFromURL(hoverImageURL)}
-                    className="w-[3rem] h-[3rem] duration-200 ease-in "
-                  />
-                )}
+                  ) : (
+                    <img
+                      src={hoverImageURL}
+                      alt={toImageNameFromURL(hoverImageURL)}
+                      className="w-[3rem] h-[3rem] duration-200 ease-in "
+                    />
+                  )}
+                </div>
+                <div className="w-[90%] h-[50%] text-center flex flex-col justify-start items-center">
+                  <p className="w-full text-center text-xs font-bold text-[#333232]">
+                    {listOfBoundaries.includes(hoverImageURL)
+                      ? removeDashes(hoverImageURL)
+                      : toImageNameFromURL(hoverImageURL)}
+                  </p>
+                </div>
               </div>
-              <div className="w-[90%] h-[50%] text-center flex flex-col justify-start items-center">
-                <p className="w-full text-center text-xs font-bold text-[#333232]">
-                  {listOfBoundaries.includes(hoverImageURL)
-                    ? removeDashes(hoverImageURL)
-                    : toImageNameFromURL(hoverImageURL)}
-                </p>
-              </div>
-            </div>
 
-              <div
-                id="react-flow-provider"
-                className="reactflow-wrapper w-full h-full bg-white"
-                ref={reactFlowWrapper}
-                onMouseOver={(e) => {
-                  if (e.target.id.split("|").length === 2) {
-                    const [type, nodeID] = e.target.id.split("|");
-                    if (type === "BoundaryEleBody") {
+                <div
+                  id="react-flow-provider"
+                  className="reactflow-wrapper w-full h-full bg-white"
+                  ref={reactFlowWrapper}
+                  onMouseOver={(e) => {
+                    if (e.target.id.split("|").length === 2) {
+                      const [type, nodeID] = e.target.id.split("|");
+                      if (type === "BoundaryEleBody") {
+                        setNodes(() =>
+                          nodes.map((obj) => {
+                            if (obj.id === nodeID) {
+                              return { ...obj, draggable: true };
+                            }
+                            return obj;
+                          })
+                        );
+                      }
+                    } else {
                       setNodes(() =>
                         nodes.map((obj) => {
-                          if (obj.id === nodeID) {
-                            return { ...obj, draggable: true };
+                          if (obj.type === "boundaryNode") {
+                            return { ...obj, draggable: false };
                           }
                           return obj;
                         })
                       );
                     }
-                  } else {
-                    setNodes(() =>
-                      nodes.map((obj) => {
-                        if (obj.type === "boundaryNode") {
-                          return { ...obj, draggable: false };
-                        }
-                        return obj;
-                      })
-                    );
-                  }
-                }}
-              >
-                <ReactFlow
-                  nodes={nodes}
-                  edges={edges}
-                  onNodesChange={onNodesChange}
-                  onEdgesChange={onEdgesChange}
-                  onConnect={onConnect}
-                  nodeTypes={nodeTypes}
-                  onClick={onClickMain}
-                  onKeyDown={onKeyDownMain}
-                  onKeyUp={onKeyUpMain}
-                  disableKeyboardA11y={true}
-                  onMouseOver={(e)=>{
-                    e.target.id.split("|")[0] === "resizer" ? setResizing(false) : void 0
-                    }
-                  }
-                  onMouseUp={(e)=>{
-                      e.target.id.split("|")[0] === "resizer" && resizing? void 0 : setResizing(true)
                   }}
-                  onInit={setReactFlowInstance}
-                  panOnDrag={resizing}
-                  onDrop={onDrop}
-                  connectionMode="loose"
-                  fitView
                 >
-                  <Background className="bg-[#fafafa]" color="#999" size={0.7} gap={15} />
-                  <Controls />
-                </ReactFlow>
-              </div>
+                  <ReactFlow
+                    nodes={nodes}
+                    edges={edges}
+                    onNodesChange={onNodesChange}
+                    onEdgesChange={onEdgesChange}
+                    onConnect={onConnect}
+                    nodeTypes={nodeTypes}
+                    onClick={onClickMain}
+                    onKeyDown={onKeyDownMain}
+                    onKeyUp={onKeyUpMain}
+                    disableKeyboardA11y={true}
+                    onMouseOver={(e)=>{
+                      e.target.id.split("|")[0] === "resizer" ? setResizing(false) : void 0
+                      }
+                    }
+                    onMouseUp={(e)=>{
+                        e.target.id.split("|")[0] === "resizer" && resizing? void 0 : setResizing(true)
+                    }}
+                    onInit={setReactFlowInstance}
+                    panOnDrag={resizing}
+                    onDrop={onDrop}
+                    connectionMode="loose"
+                    fitView
+                  >
+                    <Background className="bg-[#fafafa]" color="#999" size={0.7} gap={15} />
+                    <Controls />
+                  </ReactFlow>
+                </div>
+            </div>
           </div>
         </div>
       </ReactFlowProvider>

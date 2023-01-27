@@ -5,6 +5,7 @@ import HeaderReducer from "./HeaderReducer";
 import deleteNodeReducer from "./nodeDeleteReducer";
 import SideBarReducer from "./SideBarReducer";
 import userControlReducer from "./userControlReducer";
+import FileSelectorReducer from "./fileSelectorReducer";
 
 const allReducers = combineReducers({
   toolBarState: toolBarReducer,
@@ -12,7 +13,8 @@ const allReducers = combineReducers({
   headerTitle: HeaderReducer,
   deleteNodeRequest: deleteNodeReducer,
   sideBarState: SideBarReducer,
-  userControlState: userControlReducer
+  userControlState: userControlReducer,
+  fileSelectorState: FileSelectorReducer
 });
 
 export default allReducers;
